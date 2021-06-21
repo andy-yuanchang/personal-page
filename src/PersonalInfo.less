@@ -1,0 +1,31 @@
+.personal-info {
+  .intro {
+    position: relative;
+    .text {
+      position: absolute;
+      z-index: 1;
+      font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+      font-size: 5rem;
+      left: 25%;
+      top: 25%;
+      font-weight: bold;
+      color: gainsboro;
+    }
+    .head-shot {
+      width: 100vw;
+      // mix-blend-mode: darken;
+      display: flex;
+      align-items: center;
+    }
+  }
+
+  @media screen and (max-width: 640px) {
+    .intro {
+      .text {
+        font-size: 2rem;
+        left: 5%;
+        top: 25%;
+      }
+    }
+  }
+}

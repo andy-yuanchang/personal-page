@@ -20,15 +20,15 @@ const cfg = {
     devtool: 'source-map',
     module: {
         rules: [
-            {
-                test: /\.jsx?$/,
-                loader: 'eslint-loader',
-                enforce: 'pre',
-                exclude: /node_modules/,
-                options: {
-                    fix: true,  // 是否讓 ESLint 直接 fix
-                },
-            },
+            // {
+            //     test: /\.jsx?$/,
+            //     loader: 'eslint-loader',
+            //     enforce: 'pre',
+            //     exclude: /node_modules/,
+            //     options: {
+            //         fix: true,  // 是否讓 ESLint 直接 fix
+            //     },
+            // },
             {
                 test: /\.jsx?$/,
                 exclude: /node_modules/,
