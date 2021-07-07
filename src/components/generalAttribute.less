@@ -1,0 +1,11 @@
+.responsive-setting(@style1, @style2, @style3) {
+  @media screen and (min-width: 480px) {
+    @style1();
+  }
+  @media screen and (min-width: 768px) {
+    @style2();
+  }
+  @media screen and (min-width: 1024px) {
+    @style3();
+  }
+}

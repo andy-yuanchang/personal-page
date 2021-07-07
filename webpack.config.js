@@ -11,11 +11,16 @@ const cfg = {
         path: path.resolve(__dirname, 'dist'),
         filename: '[name].bundle.js',
         clean: true,
-        assetModuleFilename: 'images/[hash][ext][query]' // define assets output extension name
+        assetModuleFilename: 'images/[name][ext]' // define assets output extension name
     },
     mode: "development",
     resolve: {
-        extensions: ['.js', '.jsx', '.json']
+        extensions: ['.js', '.jsx', '.json'],
+        alias: {
+            images: path.resolve(__dirname, './src/assets/images'),
+            components: path.resolve(__dirname, './src/components'),
+            js: path.resolve(__dirname, './src/js')
+        }
     },
     devtool: 'source-map',
     module: {
@@ -54,6 +59,11 @@ const cfg = {
         port: 8080,
         https: false,
         contentBase: path.resolve(__dirname, 'dist'),
+        headers: {
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
+            "Access-Control-Allow-Headers": "X-Requested-With, content-type, Authorization"
+        }
         // publicPath: path.resolve(__dirname, 'dist')
     },
     plugins: [
