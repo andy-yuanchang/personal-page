@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
@@ -11,24 +11,20 @@ import Typography from '@material-ui/core/Typography';
 
 import Spinner from 'components/Spinner/Spinner';
 
-const useStyles = makeStyles({
-  root: {
-    maxWidth: '100%',
-    maxHeight: '100%',
-    // flexBasis: '100%'
+const useStyles = makeStyles((theme) => ({
+  card: {
+    maxWidth: 345,
+    whiteSpace: 'break-spaces',
   },
   media: {
-    height: 150,
+    height: 0,
+    paddingTop: '56.25%', // 16:9
   },
-  smaller: {
-    maxWidth: '70%',
-    maxHeight: '70%',
-    // flexBasis: '50%'
-  },
-});
+}));
 
 function MediaCard(props) {
   const classes = useStyles();
+  const cardRef = useRef(null);
 
   const {
     imageSrc = '',
@@ -52,7 +48,10 @@ function MediaCard(props) {
   }, []);
 
   return (
-    <Card className={`${isSelected ? classes.root : classes.smaller}`}>
+    <Card
+      className={`${classes.card}`}
+      ref={cardRef}
+    >
       <CardActionArea onClick={onClick}>
         {
           isLoadingImage ? (

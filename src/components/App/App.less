@@ -1,4 +1,4 @@
-// @import url("https://fonts.googleapis.com/css?family=Inconsolata:400,700");
+@import '../generalAttribute.less';
 
 html {
   box-sizing: border-box;
@@ -15,5 +15,12 @@ html {
 }
 
 #app {
-
+  margin: 1rem;
+  .responsive-setting({
+    margin: 1rem;
+  }, {
+    margin: 5%;
+  }, {
+    margin: 15%;
+  })
 }
