@@ -1,14 +1,13 @@
 import React from 'react';
 
-import Carousel from '../Carousel/Carousel'
+import Carousel from '../Carousel/Carousel';
 
-import './Portfolio.less'
+import './Portfolio.less';
 
 function Portfolio() {
   return (
     <div id="portfolio">
-      <Carousel
-      />
+      <Carousel />
     </div>
   );
 }

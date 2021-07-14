@@ -1,5 +1,5 @@
-import React from 'react'
-import PropTypes from 'prop-types'
+import React from 'react';
+import PropTypes from 'prop-types';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 function Spinner(props) {
@@ -7,12 +7,11 @@ function Spinner(props) {
     <div className="spinner">
       <CircularProgress />
     </div>
-  )
+  );
 }
 
 Spinner.propTypes = {
 
-}
+};
 
-export default Spinner
-
+export default Spinner;

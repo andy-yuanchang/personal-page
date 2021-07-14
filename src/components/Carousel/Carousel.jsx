@@ -1,49 +1,43 @@
-import React, { useState, useEffect } from 'react'
-import PropTypes from 'prop-types'
+import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 
-import Card from '../Card/Card'
+import { portfolioList } from 'js/portfolioData';
+import Card from '../Card/Card';
 
-import { portfolioList } from 'js/portfolioData'
-
-import './carousel.less'
+import './carousel.less';
 
 function carousel(props) {
-
-  const [selectedIndex, setSelectedIndex] = useState(0)
+  const [selectedIndex, setSelectedIndex] = useState(0);
 
   const handleNext = () => {
-    setSelectedIndex(getPreviousIndex)
-  }
+    setSelectedIndex(getPreviousIndex);
+  };
 
   const handlePrevious = () => {
-    setSelectedIndex(getNextIndex)
-  }
+    setSelectedIndex(getNextIndex);
+  };
 
-  const getNextIndex = (v) => {
-    return (v + 1) % portfolioList.length
-  }
+  const getNextIndex = (v) => (v + 1) % portfolioList.length;
 
-  const getPreviousIndex = (v) => {
-    return (v - 1 + portfolioList.length) % portfolioList.length
-  }
+  const getPreviousIndex = (v) => (v - 1 + portfolioList.length) % portfolioList.length;
 
   const renderCards = () => {
-    const previousIndex = getPreviousIndex(selectedIndex)
-    const nextIndex = getNextIndex(selectedIndex)
-    const previousCard = getCard(previousIndex)
-    const selectedCard = getCard(selectedIndex)
-    const nextCard = getCard(nextIndex)
+    const previousIndex = getPreviousIndex(selectedIndex);
+    const nextIndex = getNextIndex(selectedIndex);
+    const previousCard = getCard(previousIndex);
+    const selectedCard = getCard(selectedIndex);
+    const nextCard = getCard(nextIndex);
     return (
       <>
         {previousCard}
         {selectedCard}
         {nextCard}
       </>
-    )
-  }
+    );
+  };
 
   const getCard = (index) => {
-    const item = portfolioList[index]
+    const item = portfolioList[index];
     return (
       <Card
         imageSrc={item.imageSrc}
@@ -51,12 +45,12 @@ function carousel(props) {
         title={item.title}
         description={item.description}
         onClick={() => {
-          item.url && window.open(item.url, "_blank")
+          item.url && window.open(item.url, '_blank');
         }}
         isSelected={index === selectedIndex}
       />
-    )
-  }
+    );
+  };
 
   return (
     <div className="carousel">
@@ -72,12 +66,11 @@ function carousel(props) {
         onClick={handleNext}
       />
     </div>
-  )
+  );
 }
 
 carousel.propTypes = {
 
-}
+};
 
-export default carousel
-
+export default carousel;

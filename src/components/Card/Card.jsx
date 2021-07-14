@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types'
+import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
@@ -9,7 +9,7 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 
-import Spinner from 'components/Spinner/Spinner'
+import Spinner from 'components/Spinner/Spinner';
 
 const useStyles = makeStyles({
   root: {
@@ -24,33 +24,32 @@ const useStyles = makeStyles({
     maxWidth: '70%',
     maxHeight: '70%',
     // flexBasis: '50%'
-  }
+  },
 });
 
 function MediaCard(props) {
-
   const classes = useStyles();
 
-  const { 
-    imageSrc = "", 
-    imageTitle = "", 
-    title = "", 
-    description = "",
+  const {
+    imageSrc = '',
+    imageTitle = '',
+    title = '',
+    description = '',
     isSelected = false,
-    onClick
-  } = props
+    onClick,
+  } = props;
 
-  const [isLoadingImage, setIsLoadingImage] = useState(true)
+  const [isLoadingImage, setIsLoadingImage] = useState(true);
 
   const handleLoadImageError = (e) => {
-    e.target.src = "images/image_not-found.png"
-  }
+    e.target.src = 'images/image_not-found.png';
+  };
 
   useEffect(() => {
-    import(`images/${imageSrc}`).finally(res => {
-      setIsLoadingImage(false)
-    })
-  }, [])
+    import(`images/${imageSrc}`).finally((res) => {
+      setIsLoadingImage(false);
+    });
+  }, []);
 
   return (
     <Card className={`${isSelected ? classes.root : classes.smaller}`}>
@@ -91,11 +90,11 @@ MediaCard.propTypes = {
   title: PropTypes.string,
   description: PropTypes.string,
   isSelected: PropTypes.bool,
-  onClick: PropTypes.func.isRequired
-}
+  onClick: PropTypes.func.isRequired,
+};
 
 MediaCard.defaultProps = {
-  onClick: () => {}
-}
+  onClick: () => {},
+};
 
-export default MediaCard
+export default MediaCard;

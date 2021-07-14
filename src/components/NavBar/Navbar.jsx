@@ -7,7 +7,7 @@ import { IconContext } from 'react-icons';
 
 import { SidebarData } from '../../js/SidebarData';
 
-import './Navbar.less'
+import './Navbar.less';
 
 function Navbar() {
   const [sidebar, setSidebar] = useState(false);
@@ -25,7 +25,7 @@ function Navbar() {
         <nav className={sidebar ? 'nav-menu active' : 'nav-menu'}>
           <ul className="nav-menu-items">
             <li className="nav-menu-item navbar-toggle">
-              <Link >
+              <Link>
                 <AiIcons.AiOutlineClose onClick={toggleSidebar} />
               </Link>
             </li>

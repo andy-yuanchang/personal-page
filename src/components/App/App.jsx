@@ -2,8 +2,8 @@ import React, { Suspense } from 'react';
 import { renderRoutes } from 'react-router-config';
 
 import Navbar from '../NavBar/Navbar';
-import PersonaInfo from '../PersonalInfo/PersonaInfo'
-import Portfolio from '../Portfolio/Portfolio'
+import PersonaInfo from '../PersonalInfo/PersonaInfo';
+import Portfolio from '../Portfolio/Portfolio';
 
 import './App.less';
 
