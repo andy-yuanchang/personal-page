@@ -1,25 +1,36 @@
-import React, { useState, useEffect, useRef } from 'react';
-import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
-import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
-import Button from '@material-ui/core/Button';
+import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
+import PropTypes from 'prop-types';
+import React, { useEffect, useRef, useState } from 'react';
+import Spinner from '../Spinner/Spinner';
 
-import Spinner from 'components/Spinner/Spinner';
-
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   card: {
     maxWidth: 345,
+    maxHeight: 300,
     whiteSpace: 'break-spaces',
+    'box-shadow': 'rgba(0, 0, 0, 0.75) 0px 3px 10px',
   },
-  media: {
-    height: 0,
-    paddingTop: '56.25%', // 16:9
+  image: {
+    inset: '0',
+    width: '100%',
+    '&:hover': {
+      cursor: 'pointer'
+    }
   },
+  content: {
+
+  },
+  title: {
+
+  },
+  description: {
+
+  }
 }));
 
 function MediaCard(props) {
@@ -31,8 +42,9 @@ function MediaCard(props) {
     imageTitle = '',
     title = '',
     description = '',
-    isSelected = false,
     onClick,
+    style,
+    ...otherProps
   } = props;
 
   const [isLoadingImage, setIsLoadingImage] = useState(true);
@@ -41,16 +53,50 @@ function MediaCard(props) {
     e.target.src = 'images/image_not-found.png';
   };
 
-  useEffect(() => {
-    import(`images/${imageSrc}`).finally((res) => {
-      setIsLoadingImage(false);
-    });
-  }, []);
+  function renderMedia() {
+    return (
+      <img
+        className={classes.image}
+        src={imageSrc}
+        alt={imageTitle}
+      />
+    )
+  }
+
+  function renderContent() {
+    return (
+      <div 
+        className={classes.content}
+      >
+        <div className={classes.title}>
+          {title}
+        </div>
+        <div className={classes.description}>
+          {description}
+        </div>
+      </div>
+    )
+  }
 
   return (
-    <Card
+    <div
+      className={classes.card}
+      onClick={onClick}
+      style={style}
+      style={{
+        top: style.top,
+        left: style.left
+      }}
+      {...otherProps}
+    >
+      {renderMedia()}
+      {renderContent()}
+    </div>
+  );
+  {/* <Card
       className={`${classes.card}`}
       ref={cardRef}
+      {...otherProps}
     >
       <CardActionArea onClick={onClick}>
         {
@@ -59,7 +105,7 @@ function MediaCard(props) {
           ) : (
             <CardMedia
               className={classes.media}
-              image={`images/${imageSrc}`}
+              image={`${imageSrc}`}
               title={imageTitle}
               onError={handleLoadImageError}
             />
@@ -74,26 +120,19 @@ function MediaCard(props) {
           </Typography>
         </CardContent>
       </CardActionArea>
-      <CardActions>
-        <Button size="small" color="primary" onClick={onClick}>
-          Learn More
-        </Button>
-      </CardActions>
-    </Card>
-  );
+    </Card> */}
 }
 
 MediaCard.propTypes = {
-  imageSrc: PropTypes.string,
-  imageTitle: PropTypes.string,
-  title: PropTypes.string,
-  description: PropTypes.string,
-  isSelected: PropTypes.bool,
-  onClick: PropTypes.func.isRequired,
+  imageSrc: PropTypes.string.isRequired,
+  imageTitle: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
+  description: PropTypes.string.isRequired,
+  onClick: PropTypes.func,
 };
 
 MediaCard.defaultProps = {
-  onClick: () => {},
+  onClick: () => { },
 };
 
 export default MediaCard;

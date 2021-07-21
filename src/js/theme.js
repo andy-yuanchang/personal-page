@@ -1,10 +1,10 @@
-import { createMuiTheme } from '@material-ui/core/styles';
-import grey from '@material-ui/core/colors/grey';
+import { createTheme } from '@material-ui/core/styles';
+import blue from '@material-ui/core/colors/blue';
 
-const primary = grey[100];
-const secondary = grey[900];
+const primary = blue[100];
+const secondary = blue[900];
 
-const defaultTheme = createMuiTheme({
+const defaultTheme = createTheme({
   palette: {
     primary: {
       main: primary,
@@ -142,7 +142,7 @@ const defaultTheme = createMuiTheme({
     },
   },
 });
-const { breakpoints, typography: { pxToRem } } = defaultTheme;
+const { breakpoints } = defaultTheme;
 
 const theme = {
   ...defaultTheme,

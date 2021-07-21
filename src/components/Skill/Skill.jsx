@@ -1,18 +1,20 @@
-import React, { useState, useEffect, useRef } from 'react';
 import { Grid, Typography } from '@material-ui/core';
+import { yellow } from '@material-ui/core/colors';
 import { makeStyles } from '@material-ui/core/styles';
+import React, { useEffect, useRef, useState } from 'react';
 import * as Fa from 'react-icons/fa';
+import skillConfig from '../../assets/json/skill.config.json';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   root: {
   },
   star: {
     margin: '0.5rem',
     opacity: 0.2,
-    color: [theme.palette.text.secondary],
+    color: yellow[100],
     '&.show': {
       animation: '$fadein 0s 0s forwards ease-out',
-      color: [theme.palette.text.primary],
+      color: yellow[500],
     },
     '&.hide': {
       animation: 'none',
@@ -27,29 +29,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const skillList = [
-  {
-    name: 'JavaScript',
-    intensity: 4,
-  },
-  {
-    name: 'CSS',
-    intensity: 4,
-  },
-  {
-    name: 'Webpack',
-    intensity: 4,
-  },
-  {
-    name: 'Material UI',
-    intensity: 3,
-  },
-  {
-    name: 'Node.js',
-    intensity: 4,
-  },
-];
-
 export default function Skill() {
   const classes = useStyles();
   const observerRef = useRef(null);
@@ -58,9 +37,8 @@ export default function Skill() {
 
   useEffect(() => {
     observerRef.current = new IntersectionObserver((entires) => {
-      entires.map((entry) => {
+      entires.forEach((entry) => {
         let isIntersecting = false;
-        console.log(entry.intersectionRatio);
         if (entry.isIntersecting) {
           isIntersecting = true;
         } else {
@@ -72,15 +50,22 @@ export default function Skill() {
     observerRef.current.observe(skillListRect.current);
   }, []);
 
-  function renderSkillList() {
+  function renderIntensity(intensity, starCountsBefore) {
+    const starArray = [];
+    for (let i = 0; i < intensity; i += 1) {
+      const totalStarCounts = (i + starCountsBefore);
+      starArray.push((
+        <Fa.FaStar
+          className={`${classes.star} ${isIntersect ? 'show' : 'hide'}`}
+          style={{
+            'animation-delay': `${totalStarCounts * 0.3}s`,
+          }}
+        />
+      ));
+    }
     return (
       <>
-        {
-          skillList.map((skill, index) => {
-            const starCountsBefore = skillList.slice(0, index).reduce((previous, current) => previous + current.intensity, 0);
-            return renderSkillItem(skill, starCountsBefore);
-          })
-        }
+        {starArray.map((star) => (star))}
       </>
     );
   }
@@ -100,7 +85,7 @@ export default function Skill() {
           item
           xs={6}
         >
-          <Typography variant="h4" color="textPrimary">
+          <Typography variant="h6" color="textPrimary">
             {skillName}
           </Typography>
         </Grid>
@@ -118,22 +103,17 @@ export default function Skill() {
     );
   }
 
-  function renderIntensity(intensity, starCountsBefore) {
-    const starArray = [];
-    for (let i = 0; i < intensity; i++) {
-      const totalStarCounts = (i + starCountsBefore);
-      starArray.push((
-        <Fa.FaStar
-          className={`${classes.star} ${isIntersect ? 'show' : 'hide'}`}
-          style={{
-            'animation-delay': `${totalStarCounts * 0.3}s`,
-          }}
-        />
-      ));
-    }
+  function renderSkillList() {
     return (
       <>
-        {starArray.map((star) => (star))}
+        {
+          skillConfig.list.map((skill, index) => {
+            const starCountsBefore = skillConfig.list.slice(0, index).reduce((previous, current) => {
+              return previous + current.intensity
+            }, 0);
+            return renderSkillItem(skill, starCountsBefore);
+          })
+        }
       </>
     );
   }
@@ -143,14 +123,14 @@ export default function Skill() {
       container
       justify="flex-start"
       alignItems="center"
-      spacing={4}
       className={classes.root}
     >
       <Grid
         item
         xs={12}
+        md={6}
       >
-        <Typography variant="h1" color="textPrimary">
+        <Typography variant="h2" color="textPrimary">
           Technical Skills
         </Typography>
       </Grid>

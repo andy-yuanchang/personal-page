@@ -1,82 +1,183 @@
-import React, { useState, useRef } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { portfolioList } from 'js/portfolioData';
+import React, { useRef, useEffect, useState } from 'react';
+import portfolioConfig from '../../assets/json/portfolio.config.json';
 import Card from '../Card/Card';
-
+import useWindowSize from '../../hooks/useWindowSize';
 import './carousel.less';
 
-const useStyles = makeStyles((theme) => ({
+const SLIDE_ANIMATION_DURATION = 0.75;
+const SLIDE_POPUP_DURATION = 0.3;
+const SLIDE_POPUP_ANIMATION_DELAY = 0.5;
+
+const useStyles = makeStyles(() => ({
   root: {
 
   },
   animating: {
-    // '&.previous': {
-    //   transform: 'translate3d(-100%, 0px, 0px)',
-    // },
-    // '&.next': {
-    //   transform: 'translate3d(100%, 0px, 0px)',
-    // },
-    transition: 'transform .75s ease 0s',
-    // animation: '$fadein 0s 0s forwards ease-out',
+    transition: `transform ${SLIDE_ANIMATION_DURATION}s ease 0s`,
+  },
+  hoverEffect: {
+    'transform-origin': 'center center',
+    'z-index': 3,
+    opacity: 0,
+    'box-shadow': 'rgba(0, 0, 0, 0.75) 0px 3px 10px',
+    animation: `$popup ${SLIDE_POPUP_DURATION}s ${SLIDE_POPUP_ANIMATION_DELAY}s forwards`,
+    position: 'absolute',
+    '&.close': {
+      // animation: `$close ${SLIDE_POPUP_DURATION}s 0s forwards`,
+      transform: 'scale(0)',
+    },
+    inset: 0
+  },
+  cardImage: {
+    width: '100%',
+    '&:hover': {
+      cursor: 'pointer'
+    }
+  },
+  '@keyframes popup': {
+    '0%': {
+      transform: 'scale(1)',
+      opacity: 1,
+    },
+    '100%': {
+      transform: 'scale(1.3)',
+      opacity: 1,
+    },
+  },
+  leaveEffect: {
+    'transform-origin': 'center center',
+    'z-index': 3,
+    opacity: 0,
+    animation: `$close ${SLIDE_POPUP_DURATION}s 0s forwards`,
+    position: 'absolute',
+  },
+  '@keyframes close': {
+    '0%': {
+      transform: 'scale(1.3)',
+    },
+    '100%': {
+      transform: 'scale(0)',
+    },
   },
 }));
 
-function carousel(props) {
+function carousel() {
   const classes = useStyles();
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
-  const [dragDirection, setDragDirection] = useState('');
   const [startX, setStartX] = useState(0);
-  const [scrollLeft, setScrollLeft] = useState(0);
+  const [hoverObject, setHoverObject] = useState(null);
+  const [hoverIndex, setHoverIndex] = useState(-1);
+  const [isSliding, setIsSliding] = useState(false);
+  const [rightOffset, setRightOffset] = useState(0);
+  const [leftOffset, setLeftOffset] = useState(0);
   const sliderRef = useRef(null);
   const itemRef = useRef(null);
+  const observerRef = useRef(null);
+  const popupRef = useRef(null);
+  const [width, height] = useWindowSize();
+
+  useEffect(() => {
+    observerRef.current = new IntersectionObserver((entires) => {
+      const entry = entires[0];
+      console.log(entry.boundingClientRect, entry.intersectionRect)
+      if (entry.intersectionRatio < 1) {
+        const { boundingClientRect, intersectionRect } = entry;
+        const rOffset = boundingClientRect.right - intersectionRect.right;
+        const lOffset = boundingClientRect.left - intersectionRect.left;
+        setRightOffset(rOffset);
+        setLeftOffset(lOffset);
+      }
+    });
+  }, [])
+
+  useEffect(() => {
+    if (hoverIndex !== -1) {
+      observerRef.current.observe(popupRef.current);
+    }
+  }, [hoverIndex]);
+
+  useEffect(() => {
+    setHoverIndex(-1)
+  }, [width, height])
+
+  const portfolioLength = portfolioConfig.list.length;
+
+  const getNextIndex = (v) => (v + 1) % portfolioLength;
+
+  const getPreviousIndex = (v) => (v - 1 + portfolioLength) % portfolioLength;
+
+  const moveToNext = () => {
+    const nextIndex = getNextIndex(selectedIndex);
+    // const { width } = itemRef.current.getBoundingClientRect();
+    sliderRef.current.style.transform = `translate3d(${-100 * nextIndex}%, 0px, 0px)`;
+    setSelectedIndex(nextIndex);
+    setIsSliding(true);
+  };
+
+  const moveToPrevious = () => {
+    const previousIndex = getPreviousIndex(selectedIndex);
+    // const { width } = itemRef.current.getBoundingClientRect();
+    sliderRef.current.style.transform = `translate3d(${-100 * previousIndex}%, 0px, 0px)`;
+    setSelectedIndex(previousIndex);
+    setIsSliding(true);
+  };
 
   const handleNext = () => {
-    // setSelectedIndex(getPreviousIndex);
     moveToNext();
   };
 
   const handlePrevious = () => {
-    // setSelectedIndex(getNextIndex);
     moveToPrevious();
   };
 
-  const getNextIndex = (v) => {
-    if (v + 1 === portfolioList.length) { return v; }
-    return v + 1;
-  };
-
-  const getPreviousIndex = (v) => {
-    if (v - 1 < 0) { return 0; }
-    return v - 1;
-  };
-
-  const renderCards = () => (
-    portfolioList.map((portfolio, index) => getCard(index))
-  );
+  function handleHoverCard(e, index) {
+    setHoverObject(e.currentTarget);
+    setHoverIndex(index);
+  }
 
   const getCard = (index) => {
-    const item = portfolioList[index];
+    const item = portfolioConfig.list[index];
     return (
       <li
         className="item"
         ref={itemRef}
+        onMouseMove={isSliding ? undefined : (e) => handleHoverCard(e, index)}
       >
-        <Card
-          imageSrc={item.imageSrc}
-          imageTitle={item.imageTitle}
-          title={item.title}
-          description={item.description}
-          onClick={() => {
-            const shouldOpenNewTab = !isDragging && item.url;
-            if (shouldOpenNewTab) {
-              window.open(item.url, '_blank');
-            }
-          }}
-          isSelected={index === selectedIndex}
+        <img
+          src={`${item.imageSrc}`}
+          className={classes.cardImage}
+          alt={item.title}
         />
       </li>
     );
+  };
+
+  const renderCards = () => (
+    portfolioConfig.list.map((portfolio, index) => getCard(index))
+  );
+
+  const end = () => {
+    setIsDragging(false);
+  };
+
+  const start = (e) => {
+    setIsDragging(true);
+    const x = e.pageX || e.touches[0].pageX - sliderRef.current.offsetLeft;
+    setStartX(x);
+  };
+
+  const move = (e) => {
+    if (!isDragging) return;
+    e.preventDefault();
+    const x = e.pageX || e.touches[0].pageX - sliderRef.current.offsetLeft;
+    const dist = (x - startX);
+    if (dist > 3 && selectedIndex > 0) {
+      moveToPrevious();
+    } else if (dist < 3 && selectedIndex < portfolioConfig.list.length - 1) {
+      moveToNext();
+    }
   };
 
   function handleMouseDown(e) {
@@ -87,92 +188,132 @@ function carousel(props) {
     move(e);
   }
 
-  function handleMouseLeave(e) {
+  function handleMouseLeave() {
     end();
   }
 
-  function handleMouseUp(e) {
+  function handleMouseUp() {
     end();
   }
 
-  const end = () => {
-    setIsDragging(false);
-  };
+  function handleLeaveCard() {
+    setHoverIndex(-1);
+  }
 
-  const start = (e) => {
-    setIsDragging(true);
-    const x = e.pageX || e.touches[0].pageX - sliderRef.current.offsetLeft;
-    const left = sliderRef.current.scrollLeft;
-    setStartX(x);
-    setScrollLeft(left);
-  };
+  function renderHoverEffect() {
+    const item = portfolioConfig.list[hoverIndex];
+    const {
+      top, left, width, height,
+    } = hoverObject.getBoundingClientRect();
+    // return (
+    //   <Card
+    //     imageSrc={item.imageSrc}
+    //     imageTitle={item.imageTitle}
+    //     title={item.title}
+    //     description={item.description}
+    //     onClick={() => {
+    //       const shouldOpenNewTab = !isDragging && item.url;
+    //       if (shouldOpenNewTab) {
+    //         window.open(item.url, '_blank');
+    //       }
+    //     }}
+    //     style={{
+    //       width,
+    //       top: window.pageYOffset + top,
+    //       left: window.pageXOffset + left,
+    //       'transform-origin': 'center center',
+    //       'z-index': 3,
+    //       animation: `$popup ${SLIDE_POPUP_DURATION}s ${SLIDE_POPUP_ANIMATION_DELAY}s forwards`,
+    //       position: 'absolute',
+    //       '&.close': {
+    //         transform: 'scale(0)',
+    //       },
+    //       inset: 0,
+    //     }}
+    //     onMouseLeave={handleLeaveCard}
+    //     key={hoverIndex}
+    //   />
+    // );
+    return (
+      <div
+        className={`${classes.hoverEffect}`}
+        style={{
+          width,
+          height,
+          top: window.pageYOffset + top,
+          left: window.pageXOffset + left + leftOffset,
+          right: rightOffset
+        }}
+        onMouseLeave={handleLeaveCard}
+        key={hoverIndex}
+        onClick={() => {
+          const shouldOpenNewTab = !isDragging && item.url;
+          if (shouldOpenNewTab) {
+            window.open(item.url, '_blank');
+          }
+        }}
+        ref={popupRef}
+      >
+        <img
+          src={`${item.imageSrc}`}
+          className={classes.cardImage}
+          alt={item.title}
+        />
+      </div>
+    );
+  }
 
-  const move = (e) => {
-    if (!isDragging) return;
-    e.preventDefault();
-    const x = e.pageX || e.touches[0].pageX - sliderRef.current.offsetLeft;
-    const dist = (x - startX);
-    setDragDirection('');
-    if (dist > 3 && selectedIndex > 0) {
-      moveToPrevious();
-    } else if (dist < 3 && selectedIndex < portfolioList.length - 1) {
-      moveToNext();
-    }
-  };
-
-  const moveToNext = () => {
-    // sliderRef.current.scrollLeft = scrollLeft + itemRef.current.clientWidth;
-    // sliderRef.current.style.transition = '1s ease-out';
-    const nextIndex = getNextIndex(selectedIndex);
-    setScrollLeft(sliderRef.current.scrollLeft);
-    setSelectedIndex(nextIndex);
-    setDragDirection('next');
-    const { width } = itemRef.current.getBoundingClientRect();
-    sliderRef.current.style.transform = `translate3d(${-1 * width * nextIndex}px, 0px, 0px)`;
-    // sliderRef.current.style.transition = 'transform 0.75s ease-out 0s';
-  };
-
-  const moveToPrevious = () => {
-    const previousIndex = getPreviousIndex(selectedIndex);
-    // sliderRef.current.scrollLeft = scrollLeft - itemRef.current.clientWidth;
-    // sliderRef.current.style.transition = '1s ease-out';
-    setScrollLeft(sliderRef.current.scrollLeft);
-    setSelectedIndex(previousIndex);
-    setDragDirection('previous');
-    const { width } = itemRef.current.getBoundingClientRect();
-    sliderRef.current.style.transform = `translate3d(${-1 * width * previousIndex}px, 0px, 0px)`;
-    console.log(itemRef.current.getBoundingClientRect());
-    // sliderRef.current.style.transition = 'transform 0.75s ease-out 0s';
-  };
+  function handleSliderTransitionEnd() {
+    setIsSliding(false);
+  }
 
   return (
-    <div className="carousel">
-      <div className="slider">
-        <div className="slider-mask">
-          <ul
-            className={`items ${isDragging && 'active'} ${classes.animating}`}
-            style={{
-              // transform: `translate3d(${-100 * selectedIndex}%, 0px, 0px)`,
-            }}
-            ref={sliderRef}
-            onMouseDown={handleMouseDown}
-            onMouseMove={handleMouseMove}
-            onMouseLeave={handleMouseLeave}
-            onMouseUp={handleMouseUp}
-          >
-            {renderCards()}
-          </ul>
+    <>
+      <div className="carousel">
+        <div className="slider">
+          <div className="slider-mask">
+            <ul
+              className={`items ${isDragging && 'active'} ${classes.animating}`}
+              ref={sliderRef}
+              onMouseDown={handleMouseDown}
+              onMouseMove={handleMouseMove}
+              onMouseLeave={handleMouseLeave}
+              onMouseUp={handleMouseUp}
+              onTransitionEnd={handleSliderTransitionEnd}
+            >
+              {renderCards()}
+            </ul>
+          </div>
+        </div>
+        <div
+          className="arrow-mask left"
+          onClick={handlePrevious}
+          onKeyDown={undefined}
+          role="button"
+          tabIndex={0}
+        >
+          <div
+            className="left-arrow"
+          />
+        </div>
+        <div
+          className="arrow-mask right"
+          onClick={handleNext}
+          onKeyDown={undefined}
+          role="button"
+          tabIndex={0}
+        >
+          <div
+            className="right-arrow"
+          />
         </div>
       </div>
-      <div
-        className="left-arrow"
-        onClick={handlePrevious}
-      />
-      <div
-        className="right-arrow"
-        onClick={handleNext}
-      />
-    </div>
+      {
+        hoverIndex !== -1 && (
+          renderHoverEffect()
+        )
+      }
+    </>
   );
 }
 

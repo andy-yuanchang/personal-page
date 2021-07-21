@@ -6,7 +6,7 @@ import Skill from '../Skill/Skill';
 import Portfolio from '../Portfolio/Portfolio';
 import './App.less';
 
-function App(props) {
+function App() {
   return (
     <ThemeProvider theme={theme}>
       <div id="app">

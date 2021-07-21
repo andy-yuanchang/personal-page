@@ -1,0 +1,28 @@
+{
+  "list": [
+    {
+      "name": "JavaScript",
+      "intensity": 4
+    },
+    {
+      "name": "React",
+      "intensity": 4
+    },
+    {
+      "name": "CSS",
+      "intensity": 4
+    },
+    {
+      "name": "Webpack",
+      "intensity": 4
+    },
+    {
+      "name": "Material UI",
+      "intensity": 3
+    },
+    {
+      "name": "Node.js",
+      "intensity": 4
+    }
+  ]
+}

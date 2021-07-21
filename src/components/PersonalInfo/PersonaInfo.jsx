@@ -1,10 +1,10 @@
 import React from 'react';
-import avatar from 'images/avatar.png';
 import { GrLinkedin, GrMedium, GrGithub } from 'react-icons/gr';
 import { makeStyles } from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar';
 import Grid from '@material-ui/core/Grid';
 import { Typography } from '@material-ui/core';
+import avatar from '../../assets/images/avatar.png';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -82,36 +82,8 @@ function PersonaInfo() {
     );
   }
 
-  function renderIntroduction() {
-    return (
-      <Grid
-        item
-        xs={10}
-        sm={6}
-        container
-        justify="center"
-      >
-        <Grid
-          container
-          justify="center"
-          alignContent="space-around"
-          className={classes.introduction}
-        >
-          <Grid
-            item
-            xs={10}
-          >
-            {renderText()}
-          </Grid>
-          <Grid
-            item
-            xs={10}
-          >
-            {renderIcons()}
-          </Grid>
-        </Grid>
-      </Grid>
-    );
+  function openPage(url) {
+    window.open(url, '_blank');
   }
 
   function renderIcons() {
@@ -154,8 +126,36 @@ function PersonaInfo() {
     );
   }
 
-  function openPage(url) {
-    window.open(url, '_blank');
+  function renderIntroduction() {
+    return (
+      <Grid
+        item
+        xs={10}
+        sm={6}
+        container
+        justify="center"
+      >
+        <Grid
+          container
+          justify="center"
+          alignContent="space-around"
+          className={classes.introduction}
+        >
+          <Grid
+            item
+            xs={10}
+          >
+            {renderText()}
+          </Grid>
+          <Grid
+            item
+            xs={10}
+          >
+            {renderIcons()}
+          </Grid>
+        </Grid>
+      </Grid>
+    );
   }
 
   return (
