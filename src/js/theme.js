@@ -14,19 +14,9 @@ const defaultTheme = createTheme({
     },
   },
   typography: {
-    fontFamily: [
-      'ALTERNATE GOTHIC',
-      '-apple-system',
-      'BlinkMacSystemFont',
-      '"Segoe UI"',
-      'Roboto',
-      '"Helvetica Neue"',
-      'Arial',
-      'sans-serif',
-      '"Apple Color Emoji"',
-      '"Segoe UI Emoji"',
-      '"Segoe UI Symbol"',
-    ].join(','),
+    h4: {
+      fontFamily: 'Archivo Black',
+    },
     h5: {
       fontSize: '1.125rem',
     },

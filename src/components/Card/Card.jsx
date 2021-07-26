@@ -8,33 +8,60 @@ import PropTypes from 'prop-types';
 import React, { useEffect, useRef, useState } from 'react';
 import Spinner from '../Spinner/Spinner';
 
+const SLIDE_POPUP_DURATION = 0.3;
+const SLIDE_POPUP_ANIMATION_DELAY = 0.5;
+
 const useStyles = makeStyles(() => ({
   card: {
-    maxWidth: 345,
+    maxWidth: 400,
     maxHeight: 300,
     whiteSpace: 'break-spaces',
     'box-shadow': 'rgba(0, 0, 0, 0.75) 0px 3px 10px',
+    'transform-origin': 'center',
+    'z-index': 3,
+    animation: `$popup ${SLIDE_POPUP_DURATION}s ${SLIDE_POPUP_ANIMATION_DELAY}s forwards`,
+    position: 'absolute',
+    color: '#fff',
+    '&.close': {
+      transform: 'scale(0)',
+    },
+    inset: 0,
+    opacity: 0,
+    fontFamily: 'PT Sans',
+  },
+  '@keyframes popup': {
+    '0%': {
+      transform: 'scale(1)',
+      opacity: 1,
+    },
+    '100%': {
+      transform: 'scale(1.2)',
+      opacity: 1,
+    },
   },
   image: {
     inset: '0',
+    height: 'auto',
     width: '100%',
     '&:hover': {
-      cursor: 'pointer'
-    }
+      cursor: 'pointer',
+    },
   },
   content: {
-
+    height: 100,
+    overflow: 'hidden',
   },
   title: {
 
   },
   description: {
 
-  }
+  },
 }));
 
 function MediaCard(props) {
   const classes = useStyles();
+  const [isLoading, setIsLoading] = useState(true);
   const cardRef = useRef(null);
 
   const {
@@ -47,35 +74,39 @@ function MediaCard(props) {
     ...otherProps
   } = props;
 
-  const [isLoadingImage, setIsLoadingImage] = useState(true);
-
-  const handleLoadImageError = (e) => {
-    e.target.src = 'images/image_not-found.png';
-  };
+  useEffect(async () => {
+    try {
+      await import(`images/${imageSrc}`);
+      console.log('import image success', imageSrc);
+    } catch (e) {
+      console.log(`import ${imageSrc} error`, e);
+    }
+    setIsLoading(false);
+  }, []);
 
   function renderMedia() {
-    return (
+    return !isLoading && (
       <img
         className={classes.image}
-        src={imageSrc}
+        src={`images/${imageSrc}`}
         alt={imageTitle}
       />
-    )
+    );
   }
 
   function renderContent() {
     return (
-      <div 
+      <div
         className={classes.content}
       >
-        <div className={classes.title}>
+        <h3 className={classes.title}>
           {title}
-        </div>
-        <div className={classes.description}>
+        </h3>
+        <p className={classes.description}>
           {description}
-        </div>
+        </p>
       </div>
-    )
+    );
   }
 
   return (
@@ -85,7 +116,7 @@ function MediaCard(props) {
       style={style}
       style={{
         top: style.top,
-        left: style.left
+        left: style.left,
       }}
       {...otherProps}
     >
@@ -93,34 +124,6 @@ function MediaCard(props) {
       {renderContent()}
     </div>
   );
-  {/* <Card
-      className={`${classes.card}`}
-      ref={cardRef}
-      {...otherProps}
-    >
-      <CardActionArea onClick={onClick}>
-        {
-          isLoadingImage ? (
-            <Spinner />
-          ) : (
-            <CardMedia
-              className={classes.media}
-              image={`${imageSrc}`}
-              title={imageTitle}
-              onError={handleLoadImageError}
-            />
-          )
-        }
-        <CardContent>
-          <Typography gutterBottom variant="h5" component="h2">
-            {title}
-          </Typography>
-          <Typography variant="body2" color="textSecondary" component="p">
-            {description}
-          </Typography>
-        </CardContent>
-      </CardActionArea>
-    </Card> */}
 }
 
 MediaCard.propTypes = {

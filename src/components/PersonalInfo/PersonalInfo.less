@@ -1,37 +1,21 @@
 .personal-info {
-  .intro {
-    position: relative;
-    .text {
-      position: absolute;
-      z-index: 1;
-      font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
-      font-size: 5rem;
-      font-weight: bold;
-      color: gainsboro;
-      &.name {
-        left: 25%;
-        top: 25%;
-      }
-      &.job {
-        left: 25%;
-        top: 35%;
-      }
-    }
-    .avatar {
-      width: 100vw;
-      // mix-blend-mode: darken;
-      display: flex;
-      align-items: center;
-    }
+  .avatar {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
   }
-
-  @media screen and (max-width: 640px) {
-    .intro {
-      .text {
-        font-size: 2rem;
-        left: 5%;
-        top: 25%;
-      }
-    }
+  .introduction {
+    font-family: 'Archivo Black';
+    display: flex;
+    justify-content: center;
+    word-spacing: 2px;
+    letter-spacing: 2px;
+    padding: 0.5rem;
+    border-radius: 10px;
+    background: linear-gradient(#fff, rgb(23, 134, 199));
+    box-shadow: rgba(0, 0, 0, 0.75) 0px 3px 10px;
+    max-width: 640px;
+    margin: 5% 0;
   }
 }

@@ -11,13 +11,15 @@ const cfg = {
         path: path.resolve(__dirname, 'dist'),
         filename: '[name].bundle.js',
         clean: true,
-        assetModuleFilename: 'images/[name][ext]' // define assets output extension name
+        assetModuleFilename: 'assets/[name][ext]' // define assets output extension name
     },
     mode: "development",
     resolve: {
         extensions: ['.js', '.jsx', '.json'],
         alias: {
             images: path.resolve(__dirname, './src/assets/images'),
+            svg: path.resolve(__dirname, './src/assets/svg'),
+            json: path.resolve(__dirname, './src/assets/json'),
             components: path.resolve(__dirname, './src/components'),
             js: path.resolve(__dirname, './src/js')
         }

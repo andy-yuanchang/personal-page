@@ -2,19 +2,23 @@
   "list": [
     {
       "name": "JavaScript",
-      "intensity": 4
+      "intensity": 4,
+      "src": ""
     },
     {
       "name": "React",
-      "intensity": 4
+      "intensity": 4,
+      "src": "react.svg"
     },
     {
       "name": "CSS",
-      "intensity": 4
+      "intensity": 4,
+      "src": "static_assets.svg"
     },
     {
       "name": "Webpack",
-      "intensity": 4
+      "intensity": 4,
+      "src": "file_bundle.svg"
     },
     {
       "name": "Material UI",
@@ -22,7 +26,7 @@
     },
     {
       "name": "Node.js",
-      "intensity": 4
+      "intensity": 3
     }
   ]
 }

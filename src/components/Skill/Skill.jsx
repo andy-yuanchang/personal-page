@@ -7,6 +7,7 @@ import skillConfig from '../../assets/json/skill.config.json';
 
 const useStyles = makeStyles(() => ({
   root: {
+    fontFamily: 'Luckiest Guy',
   },
   star: {
     margin: '0.5rem',
@@ -26,6 +27,12 @@ const useStyles = makeStyles(() => ({
     '100%': {
       opacity: 1,
     },
+  },
+  imageContainer: {
+    maxWidth: 200,
+  },
+  image: {
+    width: '100%',
   },
 }));
 
@@ -70,8 +77,20 @@ export default function Skill() {
     );
   }
 
+  const handleError = async (e) => {
+    try {
+      await import('svg/page_not_found.svg');
+      console.log('load success');
+    } catch (e) {
+      console.log(e);
+    }
+    e.target.src = 'assets/page_not_found.svg';
+  };
+
   function renderSkillItem({
-    name: skillName, intensity,
+    name: skillName,
+    intensity,
+    src,
   }, starCountsBefore) {
     return (
       <Grid
@@ -85,8 +104,15 @@ export default function Skill() {
           item
           xs={6}
         >
-          <Typography variant="h6" color="textPrimary">
-            {skillName}
+          <Typography variant="h6" color="textPrimary" className={classes.imageContainer}>
+            <img
+              onLoad={() => {
+                import(`svg/${src}`);
+              }}
+              onError={handleError}
+              src={`assets/${src}`}
+              className={classes.image}
+            />
           </Typography>
         </Grid>
         <Grid
@@ -108,9 +134,7 @@ export default function Skill() {
       <>
         {
           skillConfig.list.map((skill, index) => {
-            const starCountsBefore = skillConfig.list.slice(0, index).reduce((previous, current) => {
-              return previous + current.intensity
-            }, 0);
+            const starCountsBefore = skillConfig.list.slice(0, index).reduce((previous, current) => previous + current.intensity, 0);
             return renderSkillItem(skill, starCountsBefore);
           })
         }

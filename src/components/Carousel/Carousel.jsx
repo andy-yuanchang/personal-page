@@ -1,8 +1,8 @@
 import { makeStyles } from '@material-ui/core/styles';
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import portfolioConfig from '../../assets/json/portfolio.config.json';
-import Card from '../Card/Card';
 import useWindowSize from '../../hooks/useWindowSize';
+import Card from '../Card/Card';
 import './carousel.less';
 
 const SLIDE_ANIMATION_DURATION = 0.75;
@@ -27,13 +27,25 @@ const useStyles = makeStyles(() => ({
       // animation: `$close ${SLIDE_POPUP_DURATION}s 0s forwards`,
       transform: 'scale(0)',
     },
-    inset: 0
+    inset: 0,
+  },
+  imageMask: {
+    width: '100%',
+    height: '100%',
+    'border-radius': '4px',
+    'box-shadow': 'rgba(0, 0, 0, 0.75) 0px 3px 10px',
+    zIndex: 1,
+    '&:before': {
+      content: '',
+    },
   },
   cardImage: {
     width: '100%',
     '&:hover': {
-      cursor: 'pointer'
-    }
+      cursor: 'pointer',
+    },
+    'border-radius': '10px',
+    'box-shadow': 'rgba(0, 0, 0, 0.75) 0px 3px 10px',
   },
   '@keyframes popup': {
     '0%': {
@@ -79,28 +91,8 @@ function carousel() {
   const [width, height] = useWindowSize();
 
   useEffect(() => {
-    observerRef.current = new IntersectionObserver((entires) => {
-      const entry = entires[0];
-      console.log(entry.boundingClientRect, entry.intersectionRect)
-      if (entry.intersectionRatio < 1) {
-        const { boundingClientRect, intersectionRect } = entry;
-        const rOffset = boundingClientRect.right - intersectionRect.right;
-        const lOffset = boundingClientRect.left - intersectionRect.left;
-        setRightOffset(rOffset);
-        setLeftOffset(lOffset);
-      }
-    });
-  }, [])
-
-  useEffect(() => {
-    if (hoverIndex !== -1) {
-      observerRef.current.observe(popupRef.current);
-    }
-  }, [hoverIndex]);
-
-  useEffect(() => {
-    setHoverIndex(-1)
-  }, [width, height])
+    setHoverIndex(-1);
+  }, [width, height]);
 
   const portfolioLength = portfolioConfig.list.length;
 
@@ -146,7 +138,10 @@ function carousel() {
         onMouseMove={isSliding ? undefined : (e) => handleHoverCard(e, index)}
       >
         <img
-          src={`${item.imageSrc}`}
+          onLoad={() => {
+            import(`images/${item.imageSrc}`);
+          }}
+          src={`assets/${item.imageSrc}`}
           className={classes.cardImage}
           alt={item.title}
         />
@@ -205,66 +200,54 @@ function carousel() {
     const {
       top, left, width, height,
     } = hoverObject.getBoundingClientRect();
-    // return (
-    //   <Card
-    //     imageSrc={item.imageSrc}
-    //     imageTitle={item.imageTitle}
-    //     title={item.title}
-    //     description={item.description}
-    //     onClick={() => {
-    //       const shouldOpenNewTab = !isDragging && item.url;
-    //       if (shouldOpenNewTab) {
-    //         window.open(item.url, '_blank');
-    //       }
-    //     }}
-    //     style={{
-    //       width,
-    //       top: window.pageYOffset + top,
-    //       left: window.pageXOffset + left,
-    //       'transform-origin': 'center center',
-    //       'z-index': 3,
-    //       animation: `$popup ${SLIDE_POPUP_DURATION}s ${SLIDE_POPUP_ANIMATION_DELAY}s forwards`,
-    //       position: 'absolute',
-    //       '&.close': {
-    //         transform: 'scale(0)',
-    //       },
-    //       inset: 0,
-    //     }}
-    //     onMouseLeave={handleLeaveCard}
-    //     key={hoverIndex}
-    //   />
-    // );
     return (
-      <div
-        className={`${classes.hoverEffect}`}
-        style={{
-          width,
-          height,
-          top: window.pageYOffset + top,
-          left: window.pageXOffset + left + leftOffset,
-          right: rightOffset
-        }}
-        onMouseLeave={handleLeaveCard}
-        key={hoverIndex}
+      <Card
+        imageSrc={item.imageSrc}
+        imageTitle={item.imageTitle}
+        title={item.title}
+        description={item.description}
         onClick={() => {
           const shouldOpenNewTab = !isDragging && item.url;
           if (shouldOpenNewTab) {
             window.open(item.url, '_blank');
           }
         }}
-        ref={popupRef}
-      >
-        <img
-          src={`${item.imageSrc}`}
-          className={classes.cardImage}
-          alt={item.title}
-        />
-      </div>
+        style={{
+          top: window.pageYOffset + top,
+          left: window.pageXOffset + left,
+        }}
+        onMouseLeave={handleLeaveCard}
+        key={hoverIndex}
+      />
     );
   }
 
   function handleSliderTransitionEnd() {
     setIsSliding(false);
+  }
+
+  const moveSliderTo = (index) => {
+    sliderRef.current.style.transform = `translate3d(${-100 * index}%, 0px, 0px)`;
+  };
+
+  function handleIndicator(event, index) {
+    moveSliderTo(index);
+    setSelectedIndex(index);
+  }
+
+  function renderIndicators() {
+    const arr = [];
+    for (let i = 0; i < portfolioLength; i++) {
+      arr[i] = (
+        <div
+          className={`indicator ${(selectedIndex === i) && 'selected'}`}
+          onClick={(e) => {
+            handleIndicator(e, i);
+          }}
+        />
+      );
+    }
+    return arr;
   }
 
   return (
@@ -285,34 +268,10 @@ function carousel() {
             </ul>
           </div>
         </div>
-        <div
-          className="arrow-mask left"
-          onClick={handlePrevious}
-          onKeyDown={undefined}
-          role="button"
-          tabIndex={0}
-        >
-          <div
-            className="left-arrow"
-          />
-        </div>
-        <div
-          className="arrow-mask right"
-          onClick={handleNext}
-          onKeyDown={undefined}
-          role="button"
-          tabIndex={0}
-        >
-          <div
-            className="right-arrow"
-          />
-        </div>
       </div>
-      {
-        hoverIndex !== -1 && (
-          renderHoverEffect()
-        )
-      }
+      <div className="indicator-group">
+        {renderIndicators()}
+      </div>
     </>
   );
 }

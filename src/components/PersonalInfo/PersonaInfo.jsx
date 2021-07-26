@@ -1,10 +1,12 @@
 import React from 'react';
-import { GrLinkedin, GrMedium, GrGithub } from 'react-icons/gr';
 import { makeStyles } from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar';
 import Grid from '@material-ui/core/Grid';
 import { Typography } from '@material-ui/core';
+import webDevelopmentSVG from 'svg/web_development.svg';
 import avatar from '../../assets/images/avatar.png';
+
+import './personalInfo.less';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -29,6 +31,9 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.down('md')]: {
       height: 300,
     },
+    fontFamily: 'Archivo Black',
+    wordSpacing: 5,
+    letterSpacing: 1,
   },
   text: {
     [theme.breakpoints.down('sm')]: {
@@ -52,123 +57,38 @@ function PersonaInfo() {
 
   function renderText() {
     return (
-      <>
-        <Typography variant="h4" color="textPrimary">
-          Hi, I am Andy! A Full stack developer.
-        </Typography>
-        <Typography variant="h4" color="textPrimary">
-          Dedicated to develop delightful websites.
-        </Typography>
-        <Typography variant="h4" color="textPrimary" />
-      </>
+      <h1>
+        Hello, My name is Andy! A Full stack developer. Dedicated to develop delightful websites.
+      </h1>
     );
   }
 
   function renderAvatar() {
     return (
-      <Grid
-        item
-        xs={10}
-        sm={6}
-        container
-        justify="center"
-      >
+      <div className="avatar">
         <Avatar
           alt="avatar"
           src={avatar}
           className={classes.avatar}
         />
-      </Grid>
-    );
-  }
-
-  function openPage(url) {
-    window.open(url, '_blank');
-  }
-
-  function renderIcons() {
-    return (
-      <Grid
-        container
-        spacing={3}
-        justify="flex-end"
-        className={classes.iconGroup}
-      >
-        <Grid item>
-          <Typography variant="h4" className={classes.icon}>
-            <GrLinkedin
-              onClick={() => {
-                openPage('https://www.linkedin.com/in/yu-an-chang-71b198132/');
-              }}
-            />
-          </Typography>
-        </Grid>
-        <Grid item>
-          <Typography className={classes.icon} variant="h4">
-            <GrMedium
-              onClick={() => {
-                openPage('https://andytacochang.medium.com/');
-              }}
-            />
-          </Typography>
-        </Grid>
-        <Grid item>
-          <Typography variant="h4" className={classes.icon}>
-            <GrGithub
-              onClick={() => {
-                openPage('https://github.com/andy-yuanchang');
-              }}
-            />
-          </Typography>
-        </Grid>
-
-      </Grid>
+      </div>
     );
   }
 
   function renderIntroduction() {
     return (
-      <Grid
-        item
-        xs={10}
-        sm={6}
-        container
-        justify="center"
-      >
-        <Grid
-          container
-          justify="center"
-          alignContent="space-around"
-          className={classes.introduction}
-        >
-          <Grid
-            item
-            xs={10}
-          >
-            {renderText()}
-          </Grid>
-          <Grid
-            item
-            xs={10}
-          >
-            {renderIcons()}
-          </Grid>
-        </Grid>
-      </Grid>
+      <div className="introduction">
+        {renderText()}
+      </div>
     );
   }
 
   return (
-    <Grid
-      container
-      spacing={4}
-      justify="center"
-      alignItems="center"
-      className={classes.root}
-    >
+    <div className="personal-info">
       {renderAvatar()}
+      <img src={webDevelopmentSVG} />
       {renderIntroduction()}
-    </Grid>
+    </div>
   );
 }
 
