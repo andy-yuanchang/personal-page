@@ -24,7 +24,6 @@
     }
     .item {
       display: flex;
-      justify-content: space-between;
       align-items: center;
       flex-wrap: wrap;
       .responsive-setting({
@@ -32,13 +31,11 @@
       }, {
         justify-content: center;
       }, {
-
+        justify-content: space-between;
       });
       .name-container {
         display: flex;
-        justify-content: space-between;
         align-items: center;
-        flex-basis: 50%;
         .responsive-setting({
           flex-basis: 100%;
           justify-content: center;
@@ -48,7 +45,9 @@
           justify-content: center;
           gap: 1rem;
         }, {
-
+          flex-basis: 50%;
+          justify-content: space-between;
+          gap: 0;
         });
         .name {
 
