@@ -15,17 +15,35 @@ function App() {
         <div className="icon-group">
           <ul>
             <li>
-              <a className="linkedin" target="_blank" href="https://www.linkedin.com/in/yu-an-chang-71b198132/" rel="noreferrer">
+              <a
+                className="linkedin"
+                target="_blank"
+                href="https://www.linkedin.com/in/yu-an-chang-71b198132/"
+                rel="noreferrer"
+                title="LinkedIn"
+              >
                 <GrLinkedin />
               </a>
             </li>
             <li>
-              <a className="medium" target="_blank" href="https://andytacochang.medium.com/" rel="noreferrer">
+              <a
+                className="medium"
+                target="_blank"
+                href="https://andytacochang.medium.com/"
+                rel="noreferrer"
+                title="Medium"
+              >
                 <GrMedium />
               </a>
             </li>
             <li>
-              <a className="github" target="_blank" href="https://github.com/andy-yuanchang" rel="noreferrer">
+              <a
+                className="github"
+                target="_blank"
+                href="https://github.com/andy-yuanchang"
+                rel="noreferrer"
+                title="Github"
+              >
                 <GrGithub />
               </a>
             </li>

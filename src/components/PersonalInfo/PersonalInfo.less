@@ -1,9 +1,15 @@
 .personal-info {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   .avatar {
     display: flex;
     width: 100%;
     justify-content: center;
     align-items: center;
+  }
+  & > * {
+    flex-basis: 50%;
   }
   .introduction {
     font-family: 'Archivo Black';
@@ -16,6 +22,54 @@
     background: linear-gradient(#fff, rgb(23, 134, 199));
     box-shadow: rgba(0, 0, 0, 0.75) 0px 3px 10px;
     max-width: 640px;
+    width: 100%;
     margin: 5% 0;
+    h1 {
+      inset: 0;
+    }
+  }
+  .image-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10% 0;
+    svg {
+      width: 100%;
+      max-width: 640px;
+    }
+  }
+
+  @keyframes lookUp {
+    from {
+
+    }
+    to {
+
+    }
+  }
+  @keyframes website {
+    from {
+
+    }
+    to {
+      
+    }
+  }
+  @keyframes leftHand {
+    from {
+
+    }
+    to {
+      
+    }
+  }
+  @keyframes rightHand {
+    from {
+
+    }
+    to {
+      
+    }
   }
 }

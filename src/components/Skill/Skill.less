@@ -1,0 +1,67 @@
+.skill {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  font-family: 'Luckiest Guy';
+  gap: 1rem;
+  & > * {
+    flex-basis: 100%;
+  }
+  .title {
+    text-align: center;
+    vertical-align: middle;
+  }
+  .list {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 4px;
+    & > * {
+      flex-basis: 100%;
+    }
+    .item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      .name-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-basis: 50%;
+        .name {
+
+        }
+        .image-container {
+          display: flex;
+          gap: 4px;
+          img {
+            max-width: 50px;
+            width: 100%;
+          }
+        }
+      }
+      .intensity {
+        .star {
+          margin: 0.5rem;
+          opacity: 0.2;
+          color: rgb(235, 236, 164);
+          &.show {
+            animation: fadeIn 0s 0s forwards ease-out;
+            color: rgb(236, 236, 28);
+          }
+          &.hide {
+            animation: none;
+          }
+        }
+        @keyframes fadeIn {
+          0% {
+          }
+          100% {
+            opacity: 1;
+          }
+        }
+      }
+    }
+  }
+}

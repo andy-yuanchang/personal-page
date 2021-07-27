@@ -1,97 +1,64 @@
-import { makeStyles } from '@material-ui/core/styles';
 import React, { useEffect, useRef, useState } from 'react';
 import portfolioConfig from '../../assets/json/portfolio.config.json';
 import useWindowSize from '../../hooks/useWindowSize';
 import Card from '../Card/Card';
 import './carousel.less';
 
-const SLIDE_ANIMATION_DURATION = 0.75;
-const SLIDE_POPUP_DURATION = 0.3;
-const SLIDE_POPUP_ANIMATION_DELAY = 0.5;
-
-const useStyles = makeStyles(() => ({
-  root: {
-
-  },
-  animating: {
-    transition: `transform ${SLIDE_ANIMATION_DURATION}s ease 0s`,
-  },
-  hoverEffect: {
-    'transform-origin': 'center center',
-    'z-index': 3,
-    opacity: 0,
-    'box-shadow': 'rgba(0, 0, 0, 0.75) 0px 3px 10px',
-    animation: `$popup ${SLIDE_POPUP_DURATION}s ${SLIDE_POPUP_ANIMATION_DELAY}s forwards`,
-    position: 'absolute',
-    '&.close': {
-      // animation: `$close ${SLIDE_POPUP_DURATION}s 0s forwards`,
-      transform: 'scale(0)',
-    },
-    inset: 0,
-  },
-  imageMask: {
-    width: '100%',
-    height: '100%',
-    'border-radius': '4px',
-    'box-shadow': 'rgba(0, 0, 0, 0.75) 0px 3px 10px',
-    zIndex: 1,
-    '&:before': {
-      content: '',
-    },
-  },
-  cardImage: {
-    width: '100%',
-    '&:hover': {
-      cursor: 'pointer',
-    },
-    'border-radius': '10px',
-    'box-shadow': 'rgba(0, 0, 0, 0.75) 0px 3px 10px',
-  },
-  '@keyframes popup': {
-    '0%': {
-      transform: 'scale(1)',
-      opacity: 1,
-    },
-    '100%': {
-      transform: 'scale(1.3)',
-      opacity: 1,
-    },
-  },
-  leaveEffect: {
-    'transform-origin': 'center center',
-    'z-index': 3,
-    opacity: 0,
-    animation: `$close ${SLIDE_POPUP_DURATION}s 0s forwards`,
-    position: 'absolute',
-  },
-  '@keyframes close': {
-    '0%': {
-      transform: 'scale(1.3)',
-    },
-    '100%': {
-      transform: 'scale(0)',
-    },
-  },
-}));
+const CARD_GAP_LENGTH = 10
 
 function carousel() {
-  const classes = useStyles();
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
   const [hoverObject, setHoverObject] = useState(null);
   const [hoverIndex, setHoverIndex] = useState(-1);
   const [isSliding, setIsSliding] = useState(false);
+  const [portfolioRefList, setPortfolioRefList] = useState(() => {
+    return portfolioConfig.list.map((skill) => {
+      return React.createRef();
+    })
+  })
   const [rightOffset, setRightOffset] = useState(0);
   const [leftOffset, setLeftOffset] = useState(0);
   const sliderRef = useRef(null);
   const itemRef = useRef(null);
-  const observerRef = useRef(null);
   const popupRef = useRef(null);
   const [width, height] = useWindowSize();
 
+  const observerRef = useRef(null);
+
+  useEffect(() => {
+    const callback = (entires) => {
+      // entires.forEach((entry) => {
+      //   let isIntersecting = false;
+      //   if (entry.isIntersecting) {
+      //     isIntersecting = true;
+      //   } else {
+      //     isIntersecting = false;
+      //   }
+      //   setIsIntersect(isIntersecting);
+      // });
+    }
+    const options = {
+      threshold: 0.5,
+    }
+    observerRef.current = new IntersectionObserver(callback, options);
+    // observerRef.current.observe(skillListRect.current);
+  }, []);
+
+  useEffect(() => {
+    portfolioConfig.list.forEach((skill) => {
+      import(`images/${skill.imageSrc}`);
+    })
+  }, [])
+
   useEffect(() => {
     setHoverIndex(-1);
+    const item = portfolioRefList[selectedIndex];
+    if (!item.current) return;
+
+    const { width } = item.current.getBoundingClientRect();
+    sliderRef.current.style.transform = `translate3d(${-1 * selectedIndex * (width + CARD_GAP_LENGTH)}px, 0px, 0px)`
   }, [width, height]);
 
   const portfolioLength = portfolioConfig.list.length;
@@ -102,16 +69,16 @@ function carousel() {
 
   const moveToNext = () => {
     const nextIndex = getNextIndex(selectedIndex);
-    // const { width } = itemRef.current.getBoundingClientRect();
-    sliderRef.current.style.transform = `translate3d(${-100 * nextIndex}%, 0px, 0px)`;
+    const { width } = portfolioRefList[selectedIndex].current.getBoundingClientRect();
+    sliderRef.current.style.transform = `translate3d(${-1* nextIndex * (width + CARD_GAP_LENGTH)}px, 0px, 0px)`;
     setSelectedIndex(nextIndex);
     setIsSliding(true);
   };
 
   const moveToPrevious = () => {
     const previousIndex = getPreviousIndex(selectedIndex);
-    // const { width } = itemRef.current.getBoundingClientRect();
-    sliderRef.current.style.transform = `translate3d(${-100 * previousIndex}%, 0px, 0px)`;
+    const { width } = portfolioRefList[selectedIndex].current.getBoundingClientRect();
+    sliderRef.current.style.transform = `translate3d(${-1 * previousIndex * (width + CARD_GAP_LENGTH)}px, 0px, 0px)`;
     setSelectedIndex(previousIndex);
     setIsSliding(true);
   };
@@ -133,18 +100,26 @@ function carousel() {
     const item = portfolioConfig.list[index];
     return (
       <li
-        className="item"
-        ref={itemRef}
+        className="card-item"
+        ref={portfolioRefList[index]}
         onMouseMove={isSliding ? undefined : (e) => handleHoverCard(e, index)}
       >
-        <img
-          onLoad={() => {
-            import(`images/${item.imageSrc}`);
-          }}
-          src={`assets/${item.imageSrc}`}
-          className={classes.cardImage}
-          alt={item.title}
+        <a 
+          href={item.url}
+          target="_blank"
+          rel="noreferrer"
+          title={item.title}
         />
+        <div
+          className="card-item__content"
+          style={{
+            backgroundImage: `url(assets/${item.imageSrc})`
+          }}
+        >
+          <div className="card-item__footer">
+            <h3>{item.title}</h3>
+          </div>
+        </div>
       </li>
     );
   };
@@ -168,10 +143,10 @@ function carousel() {
     e.preventDefault();
     const x = e.pageX || e.touches[0].pageX - sliderRef.current.offsetLeft;
     const dist = (x - startX);
-    if (dist > 3 && selectedIndex > 0) {
-      moveToPrevious();
-    } else if (dist < 3 && selectedIndex < portfolioConfig.list.length - 1) {
+    if (dist > 3) {
       moveToNext();
+    } else if (dist < 3) {
+      moveToPrevious();
     }
   };
 
@@ -227,7 +202,8 @@ function carousel() {
   }
 
   const moveSliderTo = (index) => {
-    sliderRef.current.style.transform = `translate3d(${-100 * index}%, 0px, 0px)`;
+    const { width } = portfolioRefList[index].current.getBoundingClientRect();
+    sliderRef.current.style.transform = `translate3d(${-1 * index * (width + CARD_GAP_LENGTH)}px, 0px, 0px)`;
   };
 
   function handleIndicator(event, index) {
@@ -256,7 +232,7 @@ function carousel() {
         <div className="slider">
           <div className="slider-mask">
             <ul
-              className={`items ${isDragging && 'active'} ${classes.animating}`}
+              className={`items ${isDragging && 'active'} drag-effect`}
               ref={sliderRef}
               onMouseDown={handleMouseDown}
               onMouseMove={handleMouseMove}
@@ -270,7 +246,15 @@ function carousel() {
         </div>
       </div>
       <div className="indicator-group">
+        <div 
+          className="left"
+          onClick={handlePrevious}
+        />
         {renderIndicators()}
+        <div 
+          className="right"
+          onClick={handleNext}
+        />
       </div>
     </>
   );

@@ -3,30 +3,32 @@
     {
       "name": "JavaScript",
       "intensity": 4,
-      "src": ""
+      "src": "javascript.svg"
     },
     {
-      "name": "React",
+      "name": "React+Redux",
       "intensity": 4,
-      "src": "react.svg"
+      "src": ["react.svg", "redux.svg"]
     },
     {
-      "name": "CSS",
+      "name": "HTML+CSS",
       "intensity": 4,
-      "src": "static_assets.svg"
+      "src": ["html.svg", "css.svg"]
     },
     {
       "name": "Webpack",
       "intensity": 4,
-      "src": "file_bundle.svg"
+      "src": "webpack.svg"
     },
     {
       "name": "Material UI",
-      "intensity": 3
+      "intensity": 3,
+      "src": "material-ui.svg"
     },
     {
       "name": "Node.js",
-      "intensity": 3
+      "intensity": 3,
+      "src": "nodejs.svg"
     }
   ]
 }

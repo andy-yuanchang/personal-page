@@ -5,10 +5,9 @@ import React, { useEffect, useRef, useState } from 'react';
 import * as Fa from 'react-icons/fa';
 import skillConfig from '../../assets/json/skill.config.json';
 
+import './Skill.less';
+
 const useStyles = makeStyles(() => ({
-  root: {
-    fontFamily: 'Luckiest Guy',
-  },
   star: {
     margin: '0.5rem',
     opacity: 0.2,
@@ -93,39 +92,39 @@ export default function Skill() {
     src,
   }, starCountsBefore) {
     return (
-      <Grid
-        item
-        xs={12}
-        container
-        justify="space-between"
-        alignItems="center"
-      >
-        <Grid
-          item
-          xs={6}
-        >
-          <Typography variant="h6" color="textPrimary" className={classes.imageContainer}>
-            <img
-              onLoad={() => {
-                import(`svg/${src}`);
-              }}
-              onError={handleError}
-              src={`assets/${src}`}
-              className={classes.image}
-            />
-          </Typography>
-        </Grid>
-        <Grid
-          item
-          xs={6}
-        >
-          <Typography
-            variant="h4"
-          >
-            {renderIntensity(intensity, starCountsBefore)}
-          </Typography>
-        </Grid>
-      </Grid>
+      <div className="item">
+        <div className="name-container">
+          <h1 className="name">
+            {skillName}
+          </h1>
+          <div className="image-container">
+            {
+              Array.isArray(src) ? (
+                src.map(srcName => (
+                  <img
+                    onLoad={() => {
+                      import(`svg/${srcName}`);
+                    }}
+                    onError={handleError}
+                    src={`assets/${srcName}`}
+                  />
+                ))
+              ) : (
+                <img
+                  onLoad={() => {
+                    import(`svg/${src}`);
+                  }}
+                  onError={handleError}
+                  src={`assets/${src}`}
+                />
+              )
+            }
+          </div>
+        </div>
+        <h1 className="intensity">
+          {renderIntensity(intensity, starCountsBefore)}
+        </h1>
+      </div>
     );
   }
 
@@ -143,33 +142,16 @@ export default function Skill() {
   }
 
   return (
-    <Grid
-      container
-      justify="flex-start"
-      alignItems="center"
-      className={classes.root}
+    <div
+      className="skill"
     >
-      <Grid
-        item
-        xs={12}
-        md={6}
+      <h1 className="title">Technical Skills</h1>
+      <div
+        className="list"
+        ref={skillListRect}
       >
-        <Typography variant="h2" color="textPrimary">
-          Technical Skills
-        </Typography>
-      </Grid>
-      <Grid
-        item
-        xs={12}
-      >
-        <Grid
-          container
-          spacing={4}
-          ref={skillListRect}
-        >
-          {renderSkillList()}
-        </Grid>
-      </Grid>
-    </Grid>
+        {renderSkillList()}
+      </div>
+    </div>
   );
 }

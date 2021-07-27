@@ -19,13 +19,13 @@ body {
 }
 
 #app {
-  margin: 1rem;
+  padding: 1rem;
   .responsive-setting({
-    margin: 1rem;
+    padding: 1rem;
   }, {
-    margin: 5%;
+    padding: 5%;
   }, {
-    margin: 15%;
+    padding: 8%;
   });
   
   .icon-group {
@@ -70,9 +70,11 @@ body {
     left: 0;
     width: 100vw;
     height: 100vh;
+    max-width: 100%;
     background: linear-gradient(180deg, #04fafd 5%, #119dff 50%, #030423);
-    position: fixed;
+    position: absolute;
     z-index: -999;
+    overflow-x: hidden;
     div {
       height: 60px;
       width: 60px;
@@ -167,8 +169,8 @@ body {
         animation: bubbling 6s linear infinite;
       }
       &:nth-child(16) {
-        top: 60%;
-        left: 100%;
+        top: 40%;
+        left: 90%;
         animation: bubbling 4s linear infinite;
       }
       &:nth-child(17) {
