@@ -36,30 +36,33 @@ body {
     z-index: 1;
     width: 55px;
     height: 200px;
-    li {
-      &:hover {
-        cursor: pointer;
-      }
-      a {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 75px;
-        height: 55px;
-        padding-left: 20px;
-        margin-left: -20px;
-        transition: margin-left 0.2s linear;
+    ul {
+      list-style-type: none;
+      li {
         &:hover {
-          margin-left: 0;
+          cursor: pointer;
         }
-        &.linkedin {
-          background-color: #0077ba;
-        }
-        &.github {
-          background-color: #4e545a;
-        }
-        &.medium {
-          background-color: black;
+        a {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 75px;
+          height: 55px;
+          padding-left: 20px;
+          margin-left: -20px;
+          transition: margin-left 0.2s linear;
+          &:hover {
+            margin-left: 0;
+          }
+          &.linkedin {
+            background-color: #0077ba;
+          }
+          &.github {
+            background-color: #4e545a;
+          }
+          &.medium {
+            background-color: black;
+          }
         }
       }
     }

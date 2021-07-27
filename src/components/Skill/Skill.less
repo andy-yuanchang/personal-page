@@ -1,3 +1,5 @@
+@import '../generalAttribute.less';
+
 .skill {
   display: flex;
   justify-content: center;
@@ -24,11 +26,30 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      flex-wrap: wrap;
+      .responsive-setting({
+        justify-content: center;
+      }, {
+        justify-content: center;
+      }, {
+
+      });
       .name-container {
         display: flex;
         justify-content: space-between;
         align-items: center;
         flex-basis: 50%;
+        .responsive-setting({
+          flex-basis: 100%;
+          justify-content: center;
+          gap: 1rem;
+        }, {
+          flex-basis: 100%;
+          justify-content: center;
+          gap: 1rem;
+        }, {
+
+        });
         .name {
 
         }
