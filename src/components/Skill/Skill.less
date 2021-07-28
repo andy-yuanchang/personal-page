@@ -5,14 +5,33 @@
   justify-content: center;
   align-items: center;
   flex-wrap: wrap;
-  font-family: 'Luckiest Guy';
+  font-family: 'Montserrat';
   gap: 1rem;
+  .responsive-setting({
+    padding: 0;
+  }, {
+    padding: 0 10%;
+  }, {
+    padding: 0 20%;
+  });
   & > * {
     flex-basis: 100%;
   }
   .title {
     text-align: center;
     vertical-align: middle;
+    position: relative;
+    &::after {
+      content: '';
+      background-image: url(../../assets/svg/skill.svg);
+      background-repeat: no-repeat;
+      background-size: 2rem;
+      background-position: center;
+      width: 2rem;
+      height: 100%;
+      margin-left: 1rem;
+      position: absolute;
+    }
   }
   .list {
     display: flex;
@@ -46,8 +65,8 @@
           gap: 1rem;
         }, {
           flex-basis: 50%;
-          justify-content: space-between;
-          gap: 0;
+          justify-content: flex-start;
+          gap: 1rem;
         });
         .name {
 

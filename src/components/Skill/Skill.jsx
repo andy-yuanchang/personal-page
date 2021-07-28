@@ -145,7 +145,9 @@ export default function Skill() {
     <div
       className="skill"
     >
-      <h1 className="title">Technical Skills</h1>
+      <h1 className="title">
+        Tech Stack
+      </h1>
       <div
         className="list"
         ref={skillListRect}

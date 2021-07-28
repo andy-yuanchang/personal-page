@@ -70,7 +70,7 @@ function carousel() {
   const moveToNext = () => {
     const nextIndex = getNextIndex(selectedIndex);
     const { width } = portfolioRefList[selectedIndex].current.getBoundingClientRect();
-    sliderRef.current.style.transform = `translate3d(${-1* nextIndex * (width + CARD_GAP_LENGTH)}px, 0px, 0px)`;
+    sliderRef.current.style.transform = `translate3d(${-1 * nextIndex * (width + CARD_GAP_LENGTH)}px, 0px, 0px)`;
     setSelectedIndex(nextIndex);
     setIsSliding(true);
   };
@@ -104,7 +104,7 @@ function carousel() {
         ref={portfolioRefList[index]}
         onMouseMove={isSliding ? undefined : (e) => handleHoverCard(e, index)}
       >
-        <a 
+        <a
           href={item.url}
           target="_blank"
           rel="noreferrer"
@@ -128,8 +128,19 @@ function carousel() {
     portfolioConfig.list.map((portfolio, index) => getCard(index))
   );
 
-  const end = () => {
+  const end = (e) => {
+    if (!isDragging) return;
     setIsDragging(false);
+    const x = e.pageX || e.touches[0].pageX - sliderRef.current.offsetLeft;
+    const dist = (x - startX);
+    const { width: selectedCardWidth } = portfolioRefList[selectedIndex].current.getBoundingClientRect();
+    const isSwipeToNext = dist < 0 && Math.abs(dist) > selectedCardWidth * 0.1
+    const isSwipeToPrevious = dist > 0 && Math.abs(dist) > selectedCardWidth * 0.1
+    if (isSwipeToNext) {
+      moveToNext();
+    } else if (isSwipeToPrevious) {
+      moveToPrevious();
+    }
   };
 
   const start = (e) => {
@@ -143,11 +154,7 @@ function carousel() {
     e.preventDefault();
     const x = e.pageX || e.touches[0].pageX - sliderRef.current.offsetLeft;
     const dist = (x - startX);
-    if (dist > 3) {
-      moveToNext();
-    } else if (dist < 3) {
-      moveToPrevious();
-    }
+    sliderRef.current.style.transform = `translate3d(${dist}px, 0px, 0px)`
   };
 
   function handleMouseDown(e) {
@@ -158,12 +165,24 @@ function carousel() {
     move(e);
   }
 
-  function handleMouseLeave() {
-    end();
+  function handleMouseLeave(e) {
+    end(e);
   }
 
-  function handleMouseUp() {
-    end();
+  function handleMouseUp(e) {
+    end(e);
+  }
+
+  function handleTouchStart(e) {
+    start(e)
+  }
+
+  function handleTouchMove(e) {
+    move(e);
+  }
+
+  function handleTouchEnd(e) {
+    end(e);
   }
 
   function handleLeaveCard() {
@@ -239,6 +258,9 @@ function carousel() {
               onMouseLeave={handleMouseLeave}
               onMouseUp={handleMouseUp}
               onTransitionEnd={handleSliderTransitionEnd}
+              onTouchStart={handleTouchStart}
+              onTouchMove={handleTouchMove}
+              onTouchEnd={handleTouchEnd}
             >
               {renderCards()}
             </ul>
@@ -246,12 +268,12 @@ function carousel() {
         </div>
       </div>
       <div className="indicator-group">
-        <div 
+        <div
           className="left"
           onClick={handlePrevious}
         />
         {renderIndicators()}
-        <div 
+        <div
           className="right"
           onClick={handleNext}
         />

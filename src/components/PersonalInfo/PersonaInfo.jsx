@@ -1,13 +1,7 @@
-import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Avatar from '@material-ui/core/Avatar';
-import Grid from '@material-ui/core/Grid';
-import { Typography } from '@material-ui/core';
-import webDevelopmentSVG from 'svg/web_development.svg';
-import webDeveloperSVG from 'svg/web_developer.svg';
-import avatar from '../../assets/images/avatar.png';
-
+import React from 'react';
 import './personalInfo.less';
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -58,22 +52,12 @@ function PersonaInfo() {
 
   return (
     <div className="personal-info">
-      {/* <div className="avatar">
-        <Avatar
-          alt="avatar"
-          src={avatar}
-          className={classes.avatar}
-        />
-      </div> */}
       <div className="introduction">
         <h1>
           Hello, My name is Andy! A Full stack developer. Dedicated to develop delightful websites.
         </h1>
       </div>
       <div className="image-container">
-        {/* <img
-          src={webDeveloperSVG}
-        /> */}
         <svg width="774" height="611" viewBox="0 0 774 611" fill="none" xmlns="http://www.w3.org/2000/svg">
           <g clip-path="url(#clip0)">
             <path d="M773.114 12.711H309.473V232.717H773.114V12.711Z" fill="#E6E6E6" />
