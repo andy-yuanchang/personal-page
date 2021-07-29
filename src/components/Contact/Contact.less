@@ -17,5 +17,25 @@
       position: absolute;
       margin-left: 1rem;
     }
+    &.hide {
+      &::after {
+        animation: none;
+      }
+    }
+    &.show {
+      &::after {
+        animation: title 1s ease-out;
+      }
+    }
+    @keyframes title {
+      from {
+        transform: translate(100%, 0);
+        opacity: 0;
+      }
+      to {
+        transform: translate(0, 0);
+        opacity: 1;
+      }
+    }
   }
 }

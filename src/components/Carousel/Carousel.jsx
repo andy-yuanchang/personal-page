@@ -18,33 +18,9 @@ function carousel() {
       return React.createRef();
     })
   })
-  const [rightOffset, setRightOffset] = useState(0);
-  const [leftOffset, setLeftOffset] = useState(0);
+  const [currentDistance, setCurrentDistance] = useState(0);
   const sliderRef = useRef(null);
-  const itemRef = useRef(null);
-  const popupRef = useRef(null);
   const [width, height] = useWindowSize();
-
-  const observerRef = useRef(null);
-
-  useEffect(() => {
-    const callback = (entires) => {
-      // entires.forEach((entry) => {
-      //   let isIntersecting = false;
-      //   if (entry.isIntersecting) {
-      //     isIntersecting = true;
-      //   } else {
-      //     isIntersecting = false;
-      //   }
-      //   setIsIntersect(isIntersecting);
-      // });
-    }
-    const options = {
-      threshold: 0.5,
-    }
-    observerRef.current = new IntersectionObserver(callback, options);
-    // observerRef.current.observe(skillListRect.current);
-  }, []);
 
   useEffect(() => {
     portfolioConfig.list.forEach((skill) => {
@@ -147,14 +123,23 @@ function carousel() {
     setIsDragging(true);
     const x = e.pageX || e.touches[0].pageX - sliderRef.current.offsetLeft;
     setStartX(x);
+
+    const transform = sliderRef.current.style.transform;
+    // translate3d(.., .., ..)
+    const transformValue = transform.replace(/translate3d\(([^\)]+)\)/, '$1');
+    // transform X
+    const transformXStr = transformValue.split(",")[0].replace("px", "");
+    const distance = parseFloat(transformXStr);
+    setCurrentDistance(distance);
   };
 
   const move = (e) => {
     if (!isDragging) return;
     e.preventDefault();
     const x = e.pageX || e.touches[0].pageX - sliderRef.current.offsetLeft;
-    const dist = (x - startX);
-    sliderRef.current.style.transform = `translate3d(${dist}px, 0px, 0px)`
+    const swipeDistance = (x - startX);
+    console.log(swipeDistance, currentDistance)
+    sliderRef.current.style.transform = `translate3d(${currentDistance + swipeDistance * 5}px, 0px, 0px)`
   };
 
   function handleMouseDown(e) {

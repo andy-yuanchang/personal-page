@@ -1,9 +1,9 @@
-import { Grid, Typography } from '@material-ui/core';
 import { yellow } from '@material-ui/core/colors';
 import { makeStyles } from '@material-ui/core/styles';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import * as Fa from 'react-icons/fa';
 import skillConfig from '../../assets/json/skill.config.json';
+import useOnScreen from '../../hooks/useOnScreen';
 
 import './Skill.less';
 
@@ -37,24 +37,8 @@ const useStyles = makeStyles(() => ({
 
 export default function Skill() {
   const classes = useStyles();
-  const observerRef = useRef(null);
-  const skillListRect = useRef(null);
-  const [isIntersect, setIsIntersect] = useState(false);
-
-  useEffect(() => {
-    observerRef.current = new IntersectionObserver((entires) => {
-      entires.forEach((entry) => {
-        let isIntersecting = false;
-        if (entry.isIntersecting) {
-          isIntersecting = true;
-        } else {
-          isIntersecting = false;
-        }
-        setIsIntersect(isIntersecting);
-      });
-    });
-    observerRef.current.observe(skillListRect.current);
-  }, []);
+  const skillListRef = useRef(null);
+  const isIntersect = useOnScreen(skillListRef)
 
   function renderIntensity(intensity, starCountsBefore) {
     const starArray = [];
@@ -145,12 +129,14 @@ export default function Skill() {
     <div
       className="skill"
     >
-      <h1 className="title">
+      <h1 
+        className={`title ${isIntersect ? "show" : "hide"}`}
+      >
         Tech Stack
       </h1>
       <div
         className="list"
-        ref={skillListRect}
+        ref={skillListRef}
       >
         {renderSkillList()}
       </div>
