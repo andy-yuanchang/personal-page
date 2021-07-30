@@ -25,7 +25,8 @@
     "build": "webpack --mode production",
     "firebase-login": "firebase login",
     "firebase-init": "firebase init",
-    "firebase-deploy": "firebase deploy"
+    "firebase-deploy": "firebase deploy",
+    "release": "webpack --mode production && firebase deploy"
   },
   "devDependencies": {
     "@babel/core": "^7.12.10",
