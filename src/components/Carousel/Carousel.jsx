@@ -4,7 +4,7 @@ import useWindowSize from '../../hooks/useWindowSize';
 import Card from '../Card/Card';
 import './carousel.less';
 
-const CARD_GAP_LENGTH = 10
+const CARD_GAP_LENGTH = 10;
 
 function carousel() {
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -13,11 +13,7 @@ function carousel() {
   const [hoverObject, setHoverObject] = useState(null);
   const [hoverIndex, setHoverIndex] = useState(-1);
   const [isSliding, setIsSliding] = useState(false);
-  const [portfolioRefList, setPortfolioRefList] = useState(() => {
-    return portfolioConfig.list.map((skill) => {
-      return React.createRef();
-    })
-  })
+  const [portfolioRefList, setPortfolioRefList] = useState(() => portfolioConfig.list.map((skill) => React.createRef()));
   const [rightOffset, setRightOffset] = useState(0);
   const [leftOffset, setLeftOffset] = useState(0);
   const sliderRef = useRef(null);
@@ -38,10 +34,10 @@ function carousel() {
       //   }
       //   setIsIntersect(isIntersecting);
       // });
-    }
+    };
     const options = {
       threshold: 0.5,
-    }
+    };
     observerRef.current = new IntersectionObserver(callback, options);
     // observerRef.current.observe(skillListRect.current);
   }, []);
@@ -49,8 +45,8 @@ function carousel() {
   useEffect(() => {
     portfolioConfig.list.forEach((skill) => {
       import(`images/${skill.imageSrc}`);
-    })
-  }, [])
+    });
+  }, []);
 
   useEffect(() => {
     setHoverIndex(-1);
@@ -58,7 +54,7 @@ function carousel() {
     if (!item.current) return;
 
     const { width } = item.current.getBoundingClientRect();
-    sliderRef.current.style.transform = `translate3d(${-1 * selectedIndex * (width + CARD_GAP_LENGTH)}px, 0px, 0px)`
+    sliderRef.current.style.transform = `translate3d(${-1 * selectedIndex * (width + CARD_GAP_LENGTH)}px, 0px, 0px)`;
   }, [width, height]);
 
   const portfolioLength = portfolioConfig.list.length;
@@ -113,7 +109,7 @@ function carousel() {
         <div
           className="card-item__content"
           style={{
-            backgroundImage: `url(assets/${item.imageSrc})`
+            backgroundImage: `url(assets/${item.imageSrc})`,
           }}
         >
           <div className="card-item__footer">
@@ -134,8 +130,8 @@ function carousel() {
     const x = e.pageX || e.touches[0].pageX - sliderRef.current.offsetLeft;
     const dist = (x - startX);
     const { width: selectedCardWidth } = portfolioRefList[selectedIndex].current.getBoundingClientRect();
-    const isSwipeToNext = dist < 0 && Math.abs(dist) > selectedCardWidth * 0.1
-    const isSwipeToPrevious = dist > 0 && Math.abs(dist) > selectedCardWidth * 0.1
+    const isSwipeToNext = dist < 0 && Math.abs(dist) > selectedCardWidth * 0.1;
+    const isSwipeToPrevious = dist > 0 && Math.abs(dist) > selectedCardWidth * 0.1;
     if (isSwipeToNext) {
       moveToNext();
     } else if (isSwipeToPrevious) {
@@ -154,7 +150,7 @@ function carousel() {
     e.preventDefault();
     const x = e.pageX || e.touches[0].pageX - sliderRef.current.offsetLeft;
     const dist = (x - startX);
-    sliderRef.current.style.transform = `translate3d(${dist}px, 0px, 0px)`
+    sliderRef.current.style.transform = `translate3d(${dist}px, 0px, 0px)`;
   };
 
   function handleMouseDown(e) {
@@ -174,7 +170,7 @@ function carousel() {
   }
 
   function handleTouchStart(e) {
-    start(e)
+    start(e);
   }
 
   function handleTouchMove(e) {

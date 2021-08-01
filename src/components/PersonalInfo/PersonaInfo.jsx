@@ -2,7 +2,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import React from 'react';
 import './personalInfo.less';
 
-
 const useStyles = makeStyles((theme) => ({
   root: {
     marginTop: 20,
@@ -59,7 +58,7 @@ function PersonaInfo() {
       </div>
       <div className="image-container">
         <svg width="774" height="611" viewBox="0 0 774 611" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <g clip-path="url(#clip0)">
+          <g clipPath="url(#clip0)">
             <path d="M773.114 12.711H309.473V232.717H773.114V12.711Z" fill="#E6E6E6" />
             <path d="M759.857 31.5769H322.731V215.134H759.857V31.5769Z" fill="white" />
             <path d="M772.917 0H309.276V19.6968H772.917V0Z" fill="#5377FE" />

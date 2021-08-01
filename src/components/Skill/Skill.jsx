@@ -100,7 +100,7 @@ export default function Skill() {
           <div className="image-container">
             {
               Array.isArray(src) ? (
-                src.map(srcName => (
+                src.map((srcName) => (
                   <img
                     onLoad={() => {
                       import(`svg/${srcName}`);

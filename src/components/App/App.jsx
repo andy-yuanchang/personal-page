@@ -6,7 +6,7 @@ import theme from '../../js/theme';
 import PersonaInfo from '../PersonalInfo/PersonaInfo';
 import Skill from '../Skill/Skill';
 import Portfolio from '../Portfolio/Portfolio';
-import Contact from '../Contact/Contact'
+import Contact from '../Contact/Contact';
 import './App.less';
 
 function App() {
