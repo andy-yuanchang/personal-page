@@ -1,6 +1,7 @@
-import React, { useRef } from 'react'
+import React, { useEffect, useRef } from 'react'
 import PropTypes from 'prop-types'
 import useOnScreen from '../../hooks/useOnScreen'
+import emailjs, { init } from 'emailjs-com'
 
 import './Contact.less'
 
@@ -8,8 +9,18 @@ function Contact(props) {
   const titleRef = useRef(null);
   const isIntersect = useOnScreen(titleRef)
 
-  const handleSubmit = (e) => {
-    
+  useEffect(() => {
+    init("user_ioYCqtgjnFXuTeWPPFP45");
+  }, [])
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const result = await emailjs.sendForm('service_kpw7ueg', 'template_c7z5fnh', e.target)
+      console.log(result.text)
+    } catch (error) {
+      console.log(error.text)
+    }
   }
 
   return (
@@ -20,17 +31,30 @@ function Contact(props) {
       >
         React Out to Me
       </h1>
-      <form 
-        className="form-control" 
+      <form
+        className="form-control"
         onSubmit={handleSubmit}
+        noValidate
       >
-        <label htmlFor="name">Name</label>
-        <input id="name" name="name" type="text" />
-        <label htmlFor="email">Email</label>
-        <input id="email" name="email" type="email"/>
-        <label htmlFor="message">Message</label>
-        <textarea id="message" name="message" rows="4" />
-        <input 
+        <div className="input-effect">
+          <input id="from_name" name="from_name" type="text" autoComplete="new-password" required />
+          <label htmlFor="from_name">
+            <span className="content-name">Your Name</span>
+          </label>
+        </div>
+        <div className="input-effect">
+          <input id="email" name="email" type="text" autocomplete="off" required />
+          <label htmlFor="email">
+            <span className="content-name">Your Email</span>
+          </label>
+        </div>
+        <div className="textarea-effect">
+          <textarea id="message" name="message" rows="4" placeholder=" "/>
+          <label htmlFor="message">
+            <span className="content-name">What you wanna say?</span>
+          </label>
+        </div>
+        <input
           type="submit"
           value="Send"
         />

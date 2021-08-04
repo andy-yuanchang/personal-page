@@ -10,7 +10,7 @@ function PersonaInfo() {
           Hello, My name is Andy! A Full stack developer. Dedicated to develop delightful websites.
         </h1>
       </div>
-      <div className="image-container">
+      <div className="svg-container">
         <svg width="774" height="610" viewBox="0 0 774 610" fill="none" xmlns="http://www.w3.org/2000/svg">
           <g id="Group">
             <path id="Vector" d="M773.114 12.711H309.473V232.717H773.114V12.711Z" fill="#E6E6E6" />

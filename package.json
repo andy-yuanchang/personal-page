@@ -8,6 +8,8 @@
     "@material-ui/icons": "^4.11.2",
     "@material-ui/styles": "^4.11.4",
     "axios": "^0.21.1",
+    "core-js": "^3.16.0",
+    "emailjs-com": "^3.2.0",
     "express": "^4.17.1",
     "firebase": "^8.6.1",
     "lodash": "^4.17.21",
@@ -21,7 +23,7 @@
     "uuid": "^8.3.2"
   },
   "scripts": {
-    "serve": "webpack serve --config webpack.config.js --progress",
+    "serve": "webpack serve --config webpack.config.js --progress --stats-error-details --hot-only",
     "build": "webpack --mode production",
     "firebase-login": "firebase login",
     "firebase-init": "firebase init",
