@@ -130,7 +130,7 @@ export default function Skill() {
       className="skill"
     >
       <h1 
-        className={`title ${isIntersect ? "show" : "hide"}`}
+        className={`title`}
       >
         Tech Stack
       </h1>
