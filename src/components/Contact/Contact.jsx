@@ -6,12 +6,20 @@ import emailjs, { init } from 'emailjs-com'
 import './Contact.less'
 
 function Contact(props) {
-  const titleRef = useRef(null);
-  const isIntersect = useOnScreen(titleRef)
+  const contactRef = useRef(null);
+  const { isOnScreen, disconnect } = useOnScreen(contactRef)
 
   useEffect(() => {
     init("user_ioYCqtgjnFXuTeWPPFP45");
-  }, [])
+    contactRef.current.style = 'visibility: visible; opacity: 0; transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 20, 0, 1)';
+  }, []);
+
+  useEffect(() => {
+    if (isOnScreen) {
+      contactRef.current.style = 'visibility: visible; opacity: 1; transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); transition: opacity 0.5s cubic-bezier(0.645, 0.045, 0.355, 1) 0.2s, transform 0.5s cubic-bezier(0.645, 0.045, 0.355, 1) 0.2s;'
+      disconnect();
+    }
+  }, [isOnScreen])
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -24,11 +32,8 @@ function Contact(props) {
   }
 
   return (
-    <div className="contact">
-      <h1
-        ref={titleRef}
-        className={isIntersect ? "show" : "hide"}
-      >
+    <div className="contact" ref={contactRef}>
+      <h1>
         React Out to Me
       </h1>
       <form

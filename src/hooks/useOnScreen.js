@@ -12,9 +12,13 @@ export default function useOnScreen(ref) {
     observerRef.current.observe(ref.current);
 
     return () => {
-      observerRef.current.disconnect();
+      disconnect();
     };
   }, [ref]);
 
-  return isOnScreen;
+  function disconnect() {
+    return observerRef.current.disconnect();
+  }
+
+  return { isOnScreen, disconnect };
 }

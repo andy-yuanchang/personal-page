@@ -1,7 +1,6 @@
-import React, { useEffect, useRef, useState, useCallback } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import portfolioConfig from '../../assets/json/portfolio.config.json';
 import useWindowSize from '../../hooks/useWindowSize';
-import Card from '../Card/Card';
 import './carousel.less';
 
 const portfolioLength = portfolioConfig.list.length;
@@ -38,7 +37,7 @@ function carousel() {
 
   useEffect(() => {
     setHoverIndex(-1);
-    sliderRef.current.style.transform = `translate3d(${-1 * sliderRef.current.children[visibleNumberOfCards + selectedIndex].offsetLeft}px, 0px, 0px)`;
+    sliderRef.current.style.transform = `translate3d(${-1 * sliderRef.current.children[selectedIndex].offsetLeft}px, 0px, 0px)`;
     const index = getVisibleNumberOfCards();
     setVisibleNumberOfCards(index);
   }, [width, height]);
@@ -61,23 +60,14 @@ function carousel() {
 
   const moveToNext = () => {
     const nextIndex = getNextIndex(selectedIndex);
-    if (nextIndex === 0) {
-      sliderRef.current.style.transform = `translate3d(${-1 * sliderRef.current.children[portfolioLength + visibleNumberOfCards].offsetLeft}px, 0px, 0px)`;
-    } else {
-      sliderRef.current.style.transform = `translate3d(${-1 * sliderRef.current.children[nextIndex + visibleNumberOfCards].offsetLeft}px, 0px, 0px)`;
-    }
+    sliderRef.current.style.transform = `translate3d(${-1 * sliderRef.current.children[nextIndex].offsetLeft}px, 0px, 0px)`;
     setSelectedIndex(nextIndex);
     setIsSliding(true);
   };
 
   const moveToPrevious = () => {
     const previousIndex = getPreviousIndex(selectedIndex);
-    if (previousIndex === portfolioLength - 1) {
-      setIsRenderingCloneImage(true);
-      sliderRef.current.style.transform = `translate3d(${-1 * sliderRef.current.children[0].offsetLeft}px, 0px, 0px)`;
-    } else {
-      sliderRef.current.style.transform = `translate3d(${-1 * sliderRef.current.children[previousIndex + visibleNumberOfCards].offsetLeft}px, 0px, 0px)`;
-    }
+    sliderRef.current.style.transform = `translate3d(${-1 * sliderRef.current.children[previousIndex].offsetLeft}px, 0px, 0px)`;
     setSelectedIndex(previousIndex);
     setIsSliding(true);
   };
@@ -102,18 +92,16 @@ function carousel() {
         className="card-item"
         onMouseMove={isSliding ? undefined : (e) => handleHoverCard(e, index)}
       >
-        <a
-          href={item.url}
-          target="_blank"
-          rel="noreferrer"
-          title={item.title}
-        />
         <div
           className="card-item__content"
           style={{
             backgroundImage: `url(assets/${item.imageSrc})`,
             backgroundRepeat: 'no-repeat'
           }}
+          onClick={e => {
+            window.open(item.url, "_blank")
+          }}
+          title={item.title}
         >
           <div className="card-item__footer">
             <h3>{item.title}</h3>
@@ -195,54 +183,25 @@ function carousel() {
     const isFirstCard = selectedIndex === 0;
     const isLastCard = selectedIndex === portfolioLength - 1;
     if (isFirstCard || isLastCard) {
-      sliderRef.current.style.transform = `translate3d(${-1 * sliderRef.current.children[selectedIndex + visibleNumberOfCards].offsetLeft}px, 0px, 0px)`;
+      sliderRef.current.style.transform = `translate3d(${-1 * sliderRef.current.children[selectedIndex].offsetLeft}px, 0px, 0px)`;
     }
   }
 
-  function handleLeaveCard() {
-    setHoverIndex(-1);
-  }
-
-  function renderHoverEffect() {
-    const item = portfolioConfig.list[hoverIndex];
-    const {
-      top, left, width, height,
-    } = hoverObject.getBoundingClientRect();
-    return (
-      <Card
-        imageSrc={item.imageSrc}
-        imageTitle={item.imageTitle}
-        title={item.title}
-        description={item.description}
-        onClick={() => {
-          const shouldOpenNewTab = !isDragging && item.url;
-          if (shouldOpenNewTab) {
-            window.open(item.url, '_blank');
-          }
-        }}
-        style={{
-          top: window.pageYOffset + top,
-          left: window.pageXOffset + left,
-        }}
-        onMouseLeave={handleLeaveCard}
-        key={hoverIndex}
-      />
-    );
-  }
-
   const moveSliderTo = (index) => {
-    sliderRef.current.style.transform = `translate3d(${-1 * sliderRef.current.children[visibleNumberOfCards + index].offsetLeft}px, 0px, 0px)`;
+    sliderRef.current.style.transform = `translate3d(${-1 * sliderRef.current.children[index].offsetLeft}px, 0px, 0px)`;
   };
 
-  const renderCards = () => (
-    portfolioConfig.list.map((portfolio, index) => getCard(index))
-  );
+  const renderCards = () => {
+    console.log("cards", portfolioConfig.list.map((portfolio, index) => getCard(index)));
+    return portfolioConfig.list.map((portfolio, index) => getCard(index))
+  }
   
   const renderPreviousCloneCards = () => {
     const cards = []
     for (let i = 0; i < visibleNumberOfCards; i++) {
       cards[i] = getCard(portfolioLength - visibleNumberOfCards + i)
     }
+    console.log("prev", cards)
     return cards
   }
 
@@ -251,6 +210,7 @@ function carousel() {
     for (let i = 0; i < visibleNumberOfCards; i++) {
       cards[i] = getCard(i)
     }
+    console.log("next", cards)
     return cards
   }
 
@@ -291,9 +251,9 @@ function carousel() {
               onTouchMove={handleTouchMove}
               onTouchEnd={handleTouchEnd}
             >
-              {renderPreviousCloneCards()}
+              {/* {renderPreviousCloneCards()} */}
               {renderCards()}
-              {renderNextCloneCards()}
+              {/* {renderNextCloneCards()} */}
             </ul>
           </div>
         </div>

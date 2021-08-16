@@ -70,11 +70,21 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <div id="app">
-        <PersonaInfo />
-        {/* <Biography /> */}
-        <Skill />
-        <Portfolio />
-        <Contact />
+        <section>
+          <PersonaInfo />
+        </section>
+        <section>
+          <Biography />
+        </section>
+        <section>
+          <Skill />
+        </section>
+        <section>
+          <Portfolio />
+        </section>
+        <section>
+          <Contact />
+        </section>
         {renderIcons()}
         <div className="sea-world-wrapper">
           {renderBubbles()}

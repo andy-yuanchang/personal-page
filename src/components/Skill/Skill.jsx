@@ -1,6 +1,6 @@
 import { yellow } from '@material-ui/core/colors';
 import { makeStyles } from '@material-ui/core/styles';
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import * as Fa from 'react-icons/fa';
 import skillConfig from '../../assets/json/skill.config.json';
 import useOnScreen from '../../hooks/useOnScreen';
@@ -37,8 +37,22 @@ const useStyles = makeStyles(() => ({
 
 export default function Skill() {
   const classes = useStyles();
+  const skillRef = useRef(null)
+  const { isOnScreen: isSkillOnScreen, disconnect } = useOnScreen(skillRef)
+
+  useEffect(() => {
+    skillRef.current.style = 'visibility: visible; opacity: 0; transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 20, 0, 1)'
+  }, [])
+
+  useEffect(() => {
+    if (isSkillOnScreen) {
+      skillRef.current.style = 'visibility: visible; opacity: 1; transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); transition: opacity 0.5s cubic-bezier(0.645, 0.045, 0.355, 1) 0.2s, transform 0.5s cubic-bezier(0.645, 0.045, 0.355, 1) 0.2s;'
+      disconnect();
+    }
+  }, [isSkillOnScreen])
+
   const skillListRef = useRef(null);
-  const isIntersect = useOnScreen(skillListRef)
+  const { isOnScreen } = useOnScreen(skillListRef)
 
   function renderIntensity(intensity, starCountsBefore) {
     const starArray = [];
@@ -46,7 +60,7 @@ export default function Skill() {
       const totalStarCounts = (i + starCountsBefore);
       starArray.push((
         <Fa.FaStar
-          className={`${classes.star} ${isIntersect ? 'show' : 'hide'}`}
+          className={`${classes.star} ${isOnScreen ? 'show' : 'hide'}`}
           style={{
             'animation-delay': `${totalStarCounts * 0.3}s`,
           }}
@@ -78,9 +92,9 @@ export default function Skill() {
     return (
       <div className="item">
         <div className="name-container">
-          <h1 className="name">
+          <h3 className="name">
             {skillName}
-          </h1>
+          </h3>
           <div className="image-container">
             {
               Array.isArray(src) ? (
@@ -128,6 +142,7 @@ export default function Skill() {
   return (
     <div
       className="skill"
+      ref={skillRef}
     >
       <h1 
         className={`title`}
