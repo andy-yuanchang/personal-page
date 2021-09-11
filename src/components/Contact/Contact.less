@@ -1,8 +1,7 @@
 .contact {
   margin-top: 20%;
-  
+  font-family: 'Montserrat';
   h1 {
-    font-family: 'Montserrat';
     text-align: center;
     margin-bottom: 2rem;
     position: relative;
@@ -16,6 +15,151 @@
       height: 100%;
       position: absolute;
       margin-left: 1rem;
+    }
+    &.hide {
+      &::after {
+        animation: none;
+      }
+    }
+    &.show {
+      &::after {
+        animation: title 1s ease-out;
+      }
+    }
+    @keyframes title {
+      from {
+        transform: translate(100%, 0);
+        opacity: 0;
+      }
+      to {
+        transform: translate(0, 0);
+        opacity: 1;
+      }
+    }
+  }
+
+  .form-control {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    align-content: space-around;
+    flex-direction: column;
+    max-width: 640px;
+    width: 100%;
+    height: 50vh;
+    margin: 0 auto;
+    input {
+      width: 100%;
+      height: 60px;
+      cursor: pointer;
+      &[type="submit"] {
+        font-family: 'Montserrat';
+        background: linear-gradient(90deg, #04fafd 5%, #119dff 100%);
+        border-radius: 4px;
+        border: 1px solid black;
+        color: black;
+        font-size: large;
+      }
+    }
+    .input-effect {
+      position: relative;
+      width: 100%;
+      input {
+        border: none;
+        padding-top: 20px;
+        &:focus, &:valid {
+          outline-width: 0;
+          & + label {
+            border: none;
+            &::after {
+              transform: translateX(0%);
+            }
+            .content-name {
+              transform: translateY(-150%);
+              color: #0077ba;
+            }
+          }
+        }
+      }
+      label {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        border-bottom: 1px solid black;
+        pointer-events: none;
+        overflow: hidden;
+        .content-name {
+          position: absolute;
+          left: 0;
+          bottom: 5px;
+          transition: all 0.3s ease;
+        }
+        &::after {
+          content: "";
+          position: absolute;
+          left: 0;
+          bottom: 0;
+          width: 100%;
+          height: 100%;
+          border-bottom: 3px solid #0077ba;
+          transform: translateX(-100%);
+        }
+      }
+    }
+    .textarea-effect {
+      width: 100%;
+      position: relative;
+      textarea {
+        width: 100%;
+        // font-family: inherit;
+        padding-top: 20px;
+        resize: none;
+        border: 1px solid black;
+        border-radius: 4px;
+        &:focus, &:not(:placeholder-shown) {
+          outline-width: 0;
+          & + label {
+            // border: none;
+            // &::after {
+            //   transform: translateX(0%);
+            // }
+            .content-name {
+              transform: translateY(-80%);
+              color: #0077ba;
+            }
+          }
+          border: 3px solid #0077ba;
+        }
+      }
+      label {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        .content-name {
+          position: absolute;
+          left: 5px;
+          top: 5px;
+          transition: all 0.3s ease;
+          background: white;
+          z-index: 999;
+          padding: 0 5px;
+        }
+        // &::after {
+        //   content: "";
+        //   position: absolute;
+        //   left: 0;
+        //   bottom: 0;
+        //   width: 100%;
+        //   height: 100%;
+        //   border-bottom: 3px solid #0077ba;
+        //   transform: translateX(-100%);
+        // }
+      }
     }
   }
 }

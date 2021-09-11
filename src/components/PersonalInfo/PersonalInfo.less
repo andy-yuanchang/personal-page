@@ -1,3 +1,6 @@
+@import '../generalAttribute.less';
+@animation-duration: 8s;
+
 .personal-info {
   display: flex;
   flex-wrap: wrap;
@@ -20,57 +23,209 @@
     word-spacing: 2px;
     letter-spacing: 2px;
     padding: 0.5rem;
-    // border-radius: 10px;
-    // background: linear-gradient(#fff, rgb(23, 134, 199));
-    // box-shadow: rgba(0, 0, 0, 0.75) 0px 3px 10px;
     max-width: 640px;
     width: 100%;
-    // margin: 5% 0;
     h1 {
       inset: 0;
+      .responsive-setting({
+        font-size: 1rem;
+      }, {
+        font-size: 1rem;
+      }, {
+        font-size: 2rem;
+      });
     }
   }
-  .image-container {
+  .svg-container {
     width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
-    // margin: 10% 0;
     svg {
       width: 100%;
       max-width: 640px;
     }
-  }
 
-  @keyframes lookUp {
-    from {
+    #human-head {
+      animation: lookUp @animation-duration infinite;
+      transform-origin: center;
+      transform-box: fill-box;
+    }
 
+    #left-hand {
+      animation: leftHand @animation-duration infinite;
+      transform-origin: center;
+      transform-box: fill-box;
     }
-    to {
 
+    #right-hand {
+      animation: rightHand @animation-duration infinite;
+      transform-origin: center;
+      transform-box: fill-box;
     }
-  }
-  @keyframes website {
-    from {
 
+    #top-line {
+      animation: topLine @animation-duration infinite;
     }
-    to {
-      
-    }
-  }
-  @keyframes leftHand {
-    from {
 
+    #middle-line {
+      animation: middleLine @animation-duration infinite;
     }
-    to {
-      
-    }
-  }
-  @keyframes rightHand {
-    from {
 
+    #bottom-line {
+      animation: bottomLine @animation-duration infinite;
     }
-    to {
+
+    #right-col {
+      animation: rightCol @animation-duration infinite;
+    }
+
+    #website {
+      animation: website @animation-duration infinite;
+    }
+
+    @keyframes lookUp {
+      37.5% {
+        transform: rotate(0deg);
+      }
+      50% {
+        transform: rotate(-30deg);
+      }
+      87.5% {
+        transform: rotate(-30deg);
+      }
+      100% {
+        transform: rotate(0deg);
+      }
+    }
+    @keyframes leftHand {
+      0% {
+        transform: rotate(0deg);
+      }
+      6.25% {
+        transform: rotate(-15deg);
+      }
+      12.5% {
+        transform: rotate(0deg);
+      }
+      18.75% {
+        transform: rotate(-15deg);
+      }
+      25% {
+        transform: rotate(0deg);
+      }
+      100% {
+
+      }
+    }
+    @keyframes rightHand {
+      0% {
+        transform: rotate(0deg);
+      }
+      6.25% {
+        transform: rotate(0deg);
+      }
+      12.5% {
+        transform: rotate(-15deg);
+      }
+      18.75% {
+        transform: rotate(0deg);
+      }
+      25% {
+        transform: rotate(-15deg);
+      }
+      31.25% {
+        transform: rotate(0deg);
+      }
+      100% {
+
+      }
+    }
+    @keyframes topLine {
+      0% {
+        opacity: 0;
+      }
+      56.25% {
+        opacity: 0;
+        transform: translate(-20%, 0);
+      }
+      62.5% {
+        opacity: 1;
+        transform: translate(0, 0);
+      }
+      87.5% {
+        transform: translate(0, 0);
+        opacity: 1;
+      }
+      100% {
+        transform: translate(-20%, 0);
+        opacity: 0;
+      }
+    }
+    @keyframes middleLine {
+      0% {
+        opacity: 0;
+      }
+      62.5% {
+        opacity: 0;
+        transform: translate(-20%, 0);
+      }
+      68.75% {
+        opacity: 1;
+        transform: translate(0, 0);
+      }
+      87.5% {
+        transform: translate(0, 0);
+        opacity: 1;
+      }
+      100% {
+        transform: translate(-20%, 0);
+        opacity: 0;
+      }
+    }
+    @keyframes bottomLine {
+      0% {
+        opacity: 0;
+      }
+      68.75% {
+        opacity: 0;
+        transform: translate(-20%, 0);
+      }
+      75% {
+        opacity: 1;
+        transform: translate(0, 0);
+      }
+      87.5% {
+        transform: translate(0, 0);
+        opacity: 1;
+      }
+      100% {
+        transform: translate(-20%, 0);
+        opacity: 0;
+      }
+    }
+    @keyframes rightCol {
+      0% {
+        opacity: 0;
+      }
+      56.25% {
+        opacity: 0;
+        transform: translate(0, -20%);
+      }
+      75% {
+        opacity: 1;
+        transform: translate(0, 0);
+      }
+      87.5% {
+        transform: translate(0, 0);
+        opacity: 1;
+      }
+      100% {
+        transform: translate(0, -20%);
+        opacity: 0;
+      }
+    }
+    @keyframes website {
       
     }
   }

@@ -1,10 +1,10 @@
-import { createTheme } from '@material-ui/core/styles';
+import { createMuiTheme } from '@material-ui/core/styles';
 import blue from '@material-ui/core/colors/blue';
 
 const primary = blue[100];
 const secondary = blue[900];
 
-const defaultTheme = createTheme({
+const defaultTheme = createMuiTheme({
   palette: {
     primary: {
       main: primary,

@@ -4,6 +4,7 @@ import { GrLinkedin, GrMedium, GrGithub } from 'react-icons/gr';
 import { IconContext } from 'react-icons';
 import theme from '../../js/theme';
 import PersonaInfo from '../PersonalInfo/PersonaInfo';
+import Biography from '../Biography/Biography';
 import Skill from '../Skill/Skill';
 import Portfolio from '../Portfolio/Portfolio';
 import Contact from '../Contact/Contact';
@@ -70,6 +71,7 @@ function App() {
     <ThemeProvider theme={theme}>
       <div id="app">
         <PersonaInfo />
+        {/* <Biography /> */}
         <Skill />
         <Portfolio />
         <Contact />
