@@ -10,9 +10,9 @@
     {
       "imageSrc": "shopping-cart.png",
       "imageTitle": "Screenshot",
-      "title": "Shopping Cart Practice",
+      "title": "Food Delivery System",
       "description": "The website demonstrates basic usage of ordering, cart checking and history orders checking, for simulating food delivery platform.",
-      "url": "https://shopping-cart-4a2be.firebaseapp.com/"
+      "url": "https://food-delivery-platform-93568.web.app/storelist"
     },
     {
       "imageSrc": "mean-shift.png",
