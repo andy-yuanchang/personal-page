@@ -2,7 +2,6 @@ import React from 'react';
 import './personalInfo.less';
 
 function PersonaInfo() {
-
   return (
     <div className="personal-info">
       <div className="introduction">

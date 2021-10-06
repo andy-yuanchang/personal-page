@@ -37,22 +37,22 @@ const useStyles = makeStyles(() => ({
 
 export default function Skill() {
   const classes = useStyles();
-  const skillRef = useRef(null)
-  const { isOnScreen: isSkillOnScreen, disconnect } = useOnScreen(skillRef)
+  const skillRef = useRef(null);
+  const { isOnScreen: isSkillOnScreen, disconnect } = useOnScreen(skillRef);
 
   useEffect(() => {
-    skillRef.current.style = 'visibility: visible; opacity: 0; transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 20, 0, 1)'
-  }, [])
+    skillRef.current.style = 'visibility: visible; opacity: 0; transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 20, 0, 1)';
+  }, []);
 
   useEffect(() => {
     if (isSkillOnScreen) {
-      skillRef.current.style = 'visibility: visible; opacity: 1; transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); transition: opacity 0.5s cubic-bezier(0.645, 0.045, 0.355, 1) 0.2s, transform 0.5s cubic-bezier(0.645, 0.045, 0.355, 1) 0.2s;'
+      skillRef.current.style = 'visibility: visible; opacity: 1; transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); transition: opacity 0.5s cubic-bezier(0.645, 0.045, 0.355, 1) 0.2s, transform 0.5s cubic-bezier(0.645, 0.045, 0.355, 1) 0.2s;';
       disconnect();
     }
-  }, [isSkillOnScreen])
+  }, [isSkillOnScreen]);
 
   const skillListRef = useRef(null);
-  const { isOnScreen } = useOnScreen(skillListRef)
+  const { isOnScreen } = useOnScreen(skillListRef);
 
   function renderIntensity(intensity, starCountsBefore) {
     const starArray = [];
@@ -98,7 +98,7 @@ export default function Skill() {
           <div className="image-container">
             {
               Array.isArray(src) ? (
-                src.map(srcName => (
+                src.map((srcName) => (
                   <img
                     onLoad={() => {
                       import(`svg/${srcName}`);
@@ -144,8 +144,8 @@ export default function Skill() {
       className="skill"
       ref={skillRef}
     >
-      <h1 
-        className={`title`}
+      <h1
+        className="title"
       >
         Tech Stack
       </h1>

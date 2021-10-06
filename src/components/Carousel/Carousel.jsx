@@ -1,4 +1,6 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, {
+  useCallback, useEffect, useRef, useState,
+} from 'react';
 import portfolioConfig from '../../assets/json/portfolio.config.json';
 import useWindowSize from '../../hooks/useWindowSize';
 import './carousel.less';
@@ -6,11 +8,11 @@ import './carousel.less';
 const portfolioLength = portfolioConfig.list.length;
 
 function pause(ms) {
-  return new Promise(res => {
+  return new Promise((res) => {
     setTimeout(() => {
-      res("OK")
-    }, ms)
-  })
+      res('OK');
+    }, ms);
+  });
 }
 function carousel() {
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -33,7 +35,7 @@ function carousel() {
     });
     const index = getVisibleNumberOfCards();
     setVisibleNumberOfCards(index);
-  }, [])
+  }, []);
 
   useEffect(() => {
     setHoverIndex(-1);
@@ -46,13 +48,13 @@ function carousel() {
     () => {
       const { width: maskWidth } = sliderRefMask.current.getBoundingClientRect();
       let index = 0;
-      while(sliderRef.current.children[index] && sliderRef.current.children[index].offsetLeft < maskWidth) {
+      while (sliderRef.current.children[index] && sliderRef.current.children[index].offsetLeft < maskWidth) {
         index++;
       }
       return index;
     },
-    []
-  )
+    [],
+  );
 
   const getNextIndex = (v) => (v + 1) % portfolioLength;
 
@@ -96,10 +98,10 @@ function carousel() {
           className="card-item__content"
           style={{
             backgroundImage: `url(assets/${item.imageSrc})`,
-            backgroundRepeat: 'no-repeat'
+            backgroundRepeat: 'no-repeat',
           }}
-          onClick={e => {
-            window.open(item.url, "_blank")
+          onClick={(e) => {
+            window.open(item.url, '_blank');
           }}
           title={item.title}
         >
@@ -118,8 +120,8 @@ function carousel() {
     const x = e.pageX || e.touches[0].pageX - sliderRef.current.offsetLeft;
     const dist = (x - startX);
     const { width: selectedCardWidth } = sliderRef.current.children[selectedIndex].getBoundingClientRect();
-    const isSwipeToNext = dist < 0 && Math.abs(dist) > selectedCardWidth * 0.1
-    const isSwipeToPrevious = dist > 0 && Math.abs(dist) > selectedCardWidth * 0.1
+    const isSwipeToNext = dist < 0 && Math.abs(dist) > selectedCardWidth * 0.1;
+    const isSwipeToPrevious = dist > 0 && Math.abs(dist) > selectedCardWidth * 0.1;
     if (isSwipeToNext) {
       moveToNext();
     } else if (isSwipeToPrevious) {
@@ -132,11 +134,11 @@ function carousel() {
     const x = e.pageX || e.touches[0].pageX - sliderRef.current.offsetLeft;
     setStartX(x);
 
-    const transform = sliderRef.current.style.transform;
+    const { transform } = sliderRef.current.style;
     // translate3d(.., .., ..)
     const transformValue = transform.replace(/translate3d\(([^\)]+)\)/, '$1');
     // transform X
-    const transformXStr = transformValue.split(",")[0].replace("px", "");
+    const transformXStr = transformValue.split(',')[0].replace('px', '');
     const distance = parseFloat(transformXStr);
     setCurrentDistance(distance);
   };
@@ -146,8 +148,8 @@ function carousel() {
     e.preventDefault();
     const x = e.pageX || e.touches[0].pageX - sliderRef.current.offsetLeft;
     const swipeDistance = (x - startX);
-    console.log(swipeDistance, currentDistance)
-    sliderRef.current.style.transform = `translate3d(${currentDistance + swipeDistance * 5}px, 0px, 0px)`
+    console.log(swipeDistance, currentDistance);
+    sliderRef.current.style.transform = `translate3d(${currentDistance + swipeDistance * 5}px, 0px, 0px)`;
   };
 
   function handleMouseDown(e) {
@@ -167,7 +169,7 @@ function carousel() {
   }
 
   function handleTouchStart(e) {
-    start(e)
+    start(e);
   }
 
   function handleTouchMove(e) {
@@ -192,27 +194,27 @@ function carousel() {
   };
 
   const renderCards = () => {
-    console.log("cards", portfolioConfig.list.map((portfolio, index) => getCard(index)));
-    return portfolioConfig.list.map((portfolio, index) => getCard(index))
-  }
-  
+    console.log('cards', portfolioConfig.list.map((portfolio, index) => getCard(index)));
+    return portfolioConfig.list.map((portfolio, index) => getCard(index));
+  };
+
   const renderPreviousCloneCards = () => {
-    const cards = []
+    const cards = [];
     for (let i = 0; i < visibleNumberOfCards; i++) {
-      cards[i] = getCard(portfolioLength - visibleNumberOfCards + i)
+      cards[i] = getCard(portfolioLength - visibleNumberOfCards + i);
     }
-    console.log("prev", cards)
-    return cards
-  }
+    console.log('prev', cards);
+    return cards;
+  };
 
   const renderNextCloneCards = () => {
-    const cards = []
+    const cards = [];
     for (let i = 0; i < visibleNumberOfCards; i++) {
-      cards[i] = getCard(i)
+      cards[i] = getCard(i);
     }
-    console.log("next", cards)
-    return cards
-  }
+    console.log('next', cards);
+    return cards;
+  };
 
   function handleIndicator(event, index) {
     moveSliderTo(index);

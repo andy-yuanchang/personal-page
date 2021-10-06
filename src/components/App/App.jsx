@@ -7,7 +7,7 @@ import PersonaInfo from '../PersonalInfo/PersonaInfo';
 import Biography from '../Biography/Biography';
 import Skill from '../Skill/Skill';
 import Portfolio from '../Portfolio/Portfolio';
-import Contact from '../Contact/Contact'
+import Contact from '../Contact/Contact';
 import './App.less';
 
 function App() {

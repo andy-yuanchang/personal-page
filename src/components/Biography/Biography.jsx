@@ -1,28 +1,27 @@
-import React, { useEffect, useRef } from 'react'
-import PropTypes from 'prop-types'
-import useOnScreen from '../../hooks/useOnScreen'
+import React, { useEffect, useRef } from 'react';
+import PropTypes from 'prop-types';
+import useOnScreen from '../../hooks/useOnScreen';
 
-import './Biography.less'
+import './Biography.less';
 
 function Biography(props) {
-
-  const biographyRef = useRef(null)
-  const { isOnScreen, disconnect } = useOnScreen(biographyRef)
+  const biographyRef = useRef(null);
+  const { isOnScreen, disconnect } = useOnScreen(biographyRef);
 
   useEffect(() => {
-    biographyRef.current.style = 'visibility: visible; opacity: 0; transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 20, 0, 1)'
-  })
+    biographyRef.current.style = 'visibility: visible; opacity: 0; transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 20, 0, 1)';
+  });
 
   useEffect(() => {
     if (isOnScreen) {
-      biographyRef.current.style = 'visibility: visible; opacity: 1; transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); transition: opacity 0.5s cubic-bezier(0.645, 0.045, 0.355, 1) 0.2s, transform 0.5s cubic-bezier(0.645, 0.045, 0.355, 1) 0.2s;'
+      biographyRef.current.style = 'visibility: visible; opacity: 1; transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); transition: opacity 0.5s cubic-bezier(0.645, 0.045, 0.355, 1) 0.2s, transform 0.5s cubic-bezier(0.645, 0.045, 0.355, 1) 0.2s;';
       disconnect();
     }
-  }, [isOnScreen])
+  }, [isOnScreen]);
 
   return (
-    <div 
-      className="biography" 
+    <div
+      className="biography"
       ref={biographyRef}
     >
       <h1>
@@ -62,12 +61,11 @@ function Biography(props) {
         </li>
       </ul>
     </div>
-  )
+  );
 }
 
 Biography.propTypes = {
 
-}
+};
 
-export default Biography
-
+export default Biography;
